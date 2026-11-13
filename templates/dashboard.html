@@ -763,28 +763,40 @@ footer {
 
     + Enter Academic Marks
 
+
 </a>
-        <div class="features">
+ <div class="features">
+    <!-- Academic Performance -->
+    <a class="feature"
+   href="{{ url_for('marks') }}"
+   style="display:block; color:inherit; text-decoration:none; cursor:pointer;">
+    <h3>📊 Academic Performance</h3>
+    <p>Track your marks and analyze your academic performance.</p>
+    </a>
 
-            <div class="feature">
-                <h3>📊 Academic Performance</h3>
-                <p>Track your marks and analyze your academic performance.</p>
-            </div>
+    <!-- Online Assessments -->
+    <a class="feature"
+   href="{{ url_for('quiz') }}"
+   style="display:block; color:inherit; text-decoration:none; cursor:pointer;">
+    <h3>📝 Online Assessments</h3>
+    <p>Take practice tests and evaluate your subject knowledge.</p>
+    </a>
 
-            <div class="feature">
-                <h3>📝 Online Assessments</h3>
-                <p>Take practice tests and evaluate your subject knowledge.</p>
-            </div>
+<!-- Personalized Learning -->
+    <a class="feature"
+   href="{{ url_for('study_materials') }}"
+   style="display:block; color:inherit; text-decoration:none; cursor:pointer;">
+    <h3>🎯 Personalized Learning</h3>
+    <p>Discover your weak topics and get suitable learning resources.</p>
+    </a>
 
-            <div class="feature">
-                <h3>🎯 Personalized Learning</h3>
-                <p>Discover your weak topics and get suitable learning resources.</p>
-            </div>
-
-            <div class="feature">
-                <h3>📈 Progress Tracking</h3>
-                <p>Monitor your learning progress and academic improvement.</p>
-            </div>
+<!-- Progress Tracking -->
+<a class="feature"
+   href="#improvement-tracker"
+   style="display:block; color:inherit; text-decoration:none; cursor:pointer;">
+    <h3>📈 Progress Tracking</h3>
+    <p>Monitor your learning progress and academic improvement.</p>
+</a>
 
 
             <div class="feature">
@@ -862,7 +874,7 @@ footer {
 <section class="dashboard-section">
 
 <!-- STUDENT IMPROVEMENT TRACKER -->
-<section class="improvement-section">
+<section class="improvement-section" id="improvement-tracker">
 
     <h2 class="improvement-title">
         📈 Student Improvement Tracker
