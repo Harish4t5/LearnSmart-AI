@@ -1,0 +1,385 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Study Plan | LearnSmart AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fc;
+            color: #263248;
+        }
+
+
+
+        .container {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            background: linear-gradient(120deg, #2457d6, #6288ed);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .welcome h1 {
+            margin-bottom: 10px;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .section h2 {
+            margin-bottom: 20px;
+            color: #2457d6;
+        }
+
+        .topic-card, .day-card {
+            border: 1px solid #e5eaf3;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .topic-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .priority {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        .High {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .Medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .Low {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .resource {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f5f7fc;
+            border-radius: 7px;
+        }
+
+.progress-box {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f0f5ff;
+    border-left: 4px solid #2457d6;
+    border-radius: 8px;
+}
+
+.progress-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 12px 0;
+}
+
+.progress-item {
+    background: white;
+    padding: 12px;
+    border-radius: 7px;
+}
+
+.progress-item strong {
+    display: block;
+    margin-top: 5px;
+    font-size: 18px;
+}
+
+.progress-message {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.progress-up {
+    color: #15803d;
+}
+
+.progress-down {
+    color: #dc2626;
+}
+
+.progress-same {
+    color: #64748b;
+}
+
+
+        .resource a {
+            color: #2457d6;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .empty {
+            color: #777;
+            padding: 15px 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #777;
+        }
+
+        @media(max-width: 600px) {
+            .welcome {
+                padding: 22px;
+            }
+
+            .section {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="container">
+
+    <div class="welcome">
+        <h1>🎯 My Personalized Study Plan</h1>
+        <p>Your learning performance helps us identify what you should study next.</p>
+    </div>
+    <div class="section">
+    <h2>🎓 Choose Your Subject</h2>
+
+    <form method="GET" action="{{ url_for('study_plan') }}">
+        <select
+            name="subject"
+            onchange="this.form.submit()"
+            style="
+                width: 100%;
+                max-width: 400px;
+                padding: 13px;
+                border: 1px solid #d5deef;
+                border-radius: 8px;
+                font-size: 15px;
+                background: white;
+                color: #263248;
+                cursor: pointer;
+            "
+        >
+            <option value="All Subjects"
+                {% if selected_subject == "All Subjects" %}selected{% endif %}>
+                All Subjects
+            </option>
+
+            {% for subject in available_subjects %}
+                <option value="{{ subject }}"
+                    {% if selected_subject == subject %}selected{% endif %}>
+                    {{ subject }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <p style="margin-top: 12px; color: #64748b;">
+        Select a subject to view its personalized topics and weekly schedule.
+    </p>
+</div>
+
+    <div class="section">
+        <h2>📚 Your Learning Priorities</h2>
+
+        {% if study_topics %}
+
+            {% for topic in study_topics %}
+
+                <div class="topic-card">
+
+                    <h3>{{ topic.topic }}</h3>
+
+                    <p><strong>Subject:</strong> {{ topic.subject }}</p>
+
+                    <p>
+                        <strong>Average Score:</strong>
+                        {{ topic.score }}%
+                    </p>
+
+<div class="progress-box">
+
+    <h4>📊 Performance Progress</h4>
+
+    <div class="progress-grid">
+
+        <div class="progress-item">
+            Average Score
+            <strong>{{ topic.score }}%</strong>
+        </div>
+
+        <div class="progress-item">
+            Latest Score
+            <strong>{{ "%.2f"|format(topic.latest_score) }}%</strong>
+        </div>
+
+        <div class="progress-item">
+            Previous Score
+            <strong>
+                {% if topic.previous_score is not none %}
+                    {{ "%.2f"|format(topic.previous_score) }}%
+                {% else %}
+                    Not available
+                {% endif %}
+            </strong>
+        </div>
+
+        <div class="progress-item">
+            Improvement
+            <strong>
+                {% if topic.previous_score is not none %}
+                    {% if topic.latest_score > topic.previous_score %}
+                        <span class="progress-up">
+                            +{{ "%.2f"|format(topic.latest_score - topic.previous_score) }} pp
+                        </span>
+                    {% elif topic.latest_score < topic.previous_score %}
+                        <span class="progress-down">
+                            -{{ "%.2f"|format(topic.previous_score - topic.latest_score) }} pp
+                        </span>
+                    {% else %}
+                        <span class="progress-same">0 pp</span>
+                    {% endif %}
+                {% else %}
+                    --
+                {% endif %}
+            </strong>
+        </div>
+
+    </div>
+
+    <p class="progress-message">
+        {{ topic.progress }}
+    </p>
+
+</div>
+
+
+                    <span class="priority {{ topic.priority }}">
+                        {{ topic.priority }} Priority
+                    </span>
+
+                    <p>{{ topic.message }}</p>
+
+                    <p>
+                        <strong>Practice Task:</strong>
+                        {{ topic.practice }}
+                    </p>
+
+                    {% if topic.resources %}
+
+                        <h4>Recommended Resources</h4>
+
+                        {% for resource in topic.resources %}
+
+                            <div class="resource">
+                                <a href="{{ resource.url }}"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    {{ resource.title }}
+                                </a>
+
+                                <p>{{ resource.resource_type }}</p>
+                                <p>{{ resource.description or "" }}</p>
+                            </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <p class="empty">
+                            No learning resources available for this topic yet.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p class="empty">
+                No quiz performance data available yet.
+                Attempt a quiz to generate your personalized study plan.
+            </p>
+
+        {% endif %}
+    </div>
+
+    <div class="section">
+
+        <h2>🗓️ Your 7-Day Study Schedule</h2>
+
+        {% if weekly_plan %}
+
+            {% for day in weekly_plan %}
+
+                <div class="day-card">
+
+                    <h3>Day {{ day.day }}</h3>
+
+                    <p><strong>Subject:</strong> {{ day.subject }}</p>
+
+                    <p><strong>Topic:</strong> {{ day.topic }}</p>
+
+                    <p><strong>Task:</strong> {{ day.task }}</p>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p class="empty">
+                Your study schedule will appear after your first quiz.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<footer>
+    © 2026 LearnSmart AI | Personalized Learning Platform
+</footer>
+
+</body>
+</html>

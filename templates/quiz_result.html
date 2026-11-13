@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnSmart AI - Quiz Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    {% include 'navbar.html' %}
+
+    <div class="quiz-container">
+
+        <h1>Quiz Completed!</h1>
+
+        <h2>Your {{ selected_subject }} Assessment Results</h2>
+
+        <div class="question-card">
+
+            <h3>Your Score</h3>
+
+            <h1>{{ "%.2f"|format(score_percentage) }}%</h1>
+
+            <p>
+                You answered {{ correct_answers }}
+                out of {{ total_questions }} questions correctly.
+            </p>
+
+        </div>
+
+        <h2>Topic-wise Performance</h2>
+
+        {% for result in topic_results %}
+
+            <div class="question-card">
+
+                <h3>{{ result.topic }}</h3>
+
+                <p>Score: {{ "%.2f"|format(result.percentage) }}%</p>
+
+{% if result.previous_percentage is not none %}
+
+    <p>
+        Previous Score: {{ result.previous_percentage }}%
+    </p>
+
+    <p>
+        {% if result.improvement > 0 %}
+            <strong>Improvement: +{{ result.improvement }}%</strong>
+        {% elif result.improvement < 0 %}
+            <strong>Score Change: {{ result.improvement }}%</strong>
+        {% else %}
+            <strong>No change in performance.</strong>
+        {% endif %}
+    </p>
+
+{% else %}
+    <p>This is your first attempt at this topic.</p>
+{% endif %}
+
+
+                {% if result.percentage >= 75 %}
+                    <p>Performance: Excellent</p>
+
+                {% elif result.percentage >= 60 %}
+                    <p>Performance: Good</p>
+
+                {% elif result.percentage >= 40 %}
+                    <p>Performance: Average</p>
+
+                {% else %}
+                    <p>Performance: Needs Improvement</p>
+
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+
+        <a href="{{ url_for('dashboard') }}">
+            <button type="button">Back to Dashboard</button>
+        </a>
+
+        <a href="{{ url_for('quiz') }}">
+            <button type="button">Attempt Again</button>
+        </a>
+
+    </div>
+
+</body>
+</html>

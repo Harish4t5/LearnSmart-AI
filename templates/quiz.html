@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnSmart AI - Quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    {% include 'navbar.html' %}
+
+    <main class="quiz-page">
+        <div class="quiz-container">
+
+            <!-- Page Header -->
+            <section class="quiz-header">
+                <span class="quiz-tag">KNOWLEDGE CHECK</span>
+                <h1>Subject-wise Assessment</h1>
+                <p>Choose your subject, select your difficulty, and test your knowledge.</p>
+            </section>
+
+            <!-- Subject and Difficulty Filters -->
+            <section class="quiz-filter-card">
+                <form action="{{ url_for('quiz') }}" method="GET" class="quiz-filter-form">
+
+                    <div class="filter-group">
+                        <label for="subject">Select Subject</label>
+                        <select name="subject" id="subject"
+                                onchange="this.form.submit()" required>
+                            {% for subject in subjects %}
+                                <option value="{{ subject }}"
+                                    {% if subject == selected_subject %}selected{% endif %}>
+                                    {{ subject }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="difficulty">Select Difficulty</label>
+                        <select name="difficulty" id="difficulty"
+                                onchange="this.form.submit()">
+                            {% for level in ["All Levels", "Beginner", "Intermediate", "Advanced"] %}
+                                <option value="{{ level }}"
+                                    {% if level == selected_difficulty %}selected{% endif %}>
+                                    {{ level }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                </form>
+            </section>
+
+            <!-- Assessment Summary -->
+            <section class="assessment-summary">
+                <div>
+                    <span class="summary-label">CURRENT ASSESSMENT</span>
+                    <h2>{{ selected_subject }}</h2>
+                    <p>Answer all questions before submitting your assessment.</p>
+                </div>
+
+                <div class="assessment-stats">
+                    <div class="assessment-stat">
+                        <span class="stat-number">{{ questions|length }}</span>
+                        <span class="stat-caption">Questions</span>
+                    </div>
+
+                    <div class="assessment-stat">
+                        <span class="stat-number">{{ selected_difficulty }}</span>
+                        <span class="stat-caption">Difficulty</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quiz Questions -->
+            <form action="{{ url_for('submit_quiz') }}" method="POST" class="quiz-form">
+
+                <input type="hidden" name="subject" value="{{ selected_subject }}">
+                <input type="hidden" name="difficulty" value="{{ selected_difficulty }}">
+
+                {% if questions %}
+
+                    {% for question in questions %}
+
+                        <section class="question-card">
+
+                            <div class="question-heading">
+                                <span class="question-number">
+                                    Question {{ loop.index }}
+                                </span>
+                                <span class="question-count">
+                                    {{ loop.index }} of {{ questions|length }}
+                                </span>
+                            </div>
+
+                            <h3>{{ question.question }}</h3>
+
+                            <div class="options-list">
+
+                                <label class="option-item">
+                                    <input type="radio"
+                                           name="question_{{ question.id }}"
+                                           value="A"
+                                           required>
+                                    <span class="option-letter">A</span>
+                                    <span class="option-text">{{ question.option_a }}</span>
+                                </label>
+
+                                <label class="option-item">
+                                    <input type="radio"
+                                           name="question_{{ question.id }}"
+                                           value="B">
+                                    <span class="option-letter">B</span>
+                                    <span class="option-text">{{ question.option_b }}</span>
+                                </label>
+
+                                <label class="option-item">
+                                    <input type="radio"
+                                           name="question_{{ question.id }}"
+                                           value="C">
+                                    <span class="option-letter">C</span>
+                                    <span class="option-text">{{ question.option_c }}</span>
+                                </label>
+
+                                <label class="option-item">
+                                    <input type="radio"
+                                           name="question_{{ question.id }}"
+                                           value="D">
+                                    <span class="option-letter">D</span>
+                                    <span class="option-text">{{ question.option_d }}</span>
+                                </label>
+
+                            </div>
+                        </section>
+
+                    {% endfor %}
+
+                    <div class="quiz-submit-area">
+                        <p>Review your selected answers before submitting.</p>
+                        <button type="submit" class="quiz-submit-btn">
+                            Submit Assessment
+                        </button>
+                    </div>
+
+                {% else %}
+
+                    <div class="no-questions">
+                        <h3>No questions available</h3>
+                        <p>There are currently no questions for this subject and difficulty.</p>
+                    </div>
+
+                {% endif %}
+
+            </form>
+
+        </div>
+    </main>
+
+</body>
+</html>

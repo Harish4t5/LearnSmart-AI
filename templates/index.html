@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ideathon2k26 | Learn Smarter</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">Ideathon<span>2k26</span></div>
+
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+
+            <div class="nav-actions">
+    <a href="{{ url_for('login') }}" class="login-btn">Login</a>
+    <a href="{{ url_for('register') }}" class="start-btn">Register</a>
+</div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+            <p class="tagline">YOUR PERSONAL AI LEARNING COMPANION</p>
+
+            <h1>
+                Learn Smarter.<br>
+                Grow <span>Faster.</span>
+            </h1>
+
+            <p class="description">
+                An intelligent learning platform designed for B.Tech students.
+                Identify your weaknesses, discover the right resources
+                and create your own personalized learning journey.
+            </p>
+
+            <a href="{{ url_for('register') }}" class="start-btn">Get Started →</a>
+        </div>
+
+        <div class="hero-card">
+            <div class="card-icon">✦</div>
+            <h2>Your Learning Journey</h2>
+            <p>Powered by Artificial Intelligence</p>
+
+            <div class="feature-item">✓ Smart Performance Analysis</div>
+            <div class="feature-item">✓ Personalized Study Plans</div>
+            <div class="feature-item">✓ Recommended Learning Resources</div>
+        </div>
+
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+
+        <div class="section-heading">
+            <p>WHAT WE OFFER</p>
+            <h2>Everything you need to learn better</h2>
+        </div>
+
+        <div class="feature-container">
+
+            <div class="feature-box">
+                <div class="feature-icon">🧠</div>
+                <h3>AI Assessment</h3>
+                <p>Analyze your academic performance through smart assessments.</p>
+            </div>
+
+            <div class="feature-box">
+                <div class="feature-icon">🎯</div>
+                <h3>Weakness Detection</h3>
+                <p>Identify the subjects and topics where you need improvement.</p>
+            </div>
+
+            <div class="feature-box">
+                <div class="feature-icon">📚</div>
+                <h3>Smart Resources</h3>
+                <p>Discover useful lectures, study materials and practice questions.</p>
+            </div>
+
+            <div class="feature-box">
+                <div class="feature-icon">📈</div>
+                <h3>Progress Tracking</h3>
+                <p>Monitor your academic improvement and learning progress.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <h2>One Student. One Learning Path.</h2>
+
+        <p>
+            Ideathon2k26 aims to make engineering education
+            more personalized, accessible and effective
+            through Artificial Intelligence and Machine Learning.
+        </p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Ideathon2k26 | LearnSmart AI</p>
+        <p>Built for a smarter learning future.</p>
+    </footer>
+
+</body>
+</html>

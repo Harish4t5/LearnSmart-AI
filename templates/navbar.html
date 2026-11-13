@@ -1,0 +1,454 @@
+
+<style>
+    .app-navbar {
+        background: #ffffff;
+        padding: 16px 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .app-navbar h2 {
+        color: #2457d6;
+        font-size: 23px;
+        margin: 0;
+    }
+
+    .app-nav-links {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .app-nav-links a {
+        color: #334155;
+        text-decoration: none;
+        font-weight: 600;
+        padding: 9px 13px;
+        border-radius: 7px;
+        transition: 0.2s;
+    }
+
+    .app-nav-links a:hover {
+        background: #eef3ff;
+        color: #2457d6;
+    }
+
+    .app-nav-links .app-logout {
+        background: #2457d6;
+        color: white;
+    }
+
+    .app-nav-links .app-logout:hover {
+        background: #1745b5;
+        color: white;
+    }
+
+    @media (max-width: 650px) {
+        .app-navbar {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .app-nav-links {
+            gap: 5px;
+        }
+    }
+</style>
+
+<nav class="app-navbar">
+    <h2>LearnSmart AI</h2>
+
+    <div class="app-nav-links">
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('quiz') }}">Take Quiz</a>
+        <a href="{{ url_for('analytics') }}">Analytics</a>
+        <a href="{{ url_for('study_plan') }}">Study Plan</a>
+        <a href="{{ url_for('study_materials') }}">Study Materials</a>
+        <a href="{{ url_for('marks') }}">Marks</a>
+        <a href="{{ url_for('logout') }}" class="app-logout">Logout</a>
+    </div>
+</nav>
+
+<!-- LearnSmart AI Floating Assistant -->
+<style>
+    .ai-chat-button {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        z-index: 2000;
+        background: #2457d6;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 15px 22px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 5px 20px rgba(36, 87, 214, 0.3);
+    }
+
+    .ai-chat-window {
+        display: none;
+        position: fixed;
+        bottom: 90px;
+        right: 25px;
+        width: 360px;
+        height: 480px;
+        max-height: calc(100vh - 120px);
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 8px 35px rgba(0, 0, 0, 0.18);
+        z-index: 2000;
+        overflow: hidden;
+        flex-direction: column;
+        border: 1px solid #e2e8f0;
+    }
+
+    .ai-chat-window.open {
+        display: flex;
+    }
+
+    .ai-chat-header {
+        background: #2457d6;
+        color: white;
+        padding: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .ai-chat-header h3 {
+        margin: 0;
+        font-size: 17px;
+    }
+
+    .ai-chat-header p {
+        margin: 4px 0 0;
+        font-size: 12px;
+        opacity: 0.9;
+    }
+
+    .ai-chat-close {
+        background: transparent;
+        color: white;
+        border: none;
+        font-size: 23px;
+        cursor: pointer;
+    }
+
+    .ai-chat-messages {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        background: #f8fafc;
+    }
+
+    .ai-message {
+        max-width: 85%;
+        padding: 11px 13px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        font-size: 14px;
+        line-height: 1.5;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
+
+    .ai-message.bot {
+        background: white;
+        color: #334155;
+        border: 1px solid #e2e8f0;
+    }
+
+    .ai-message.user {
+        background: #2457d6;
+        color: white;
+        margin-left: auto;
+    }
+
+    .ai-chat-input-area {
+        display: flex;
+        gap: 8px;
+        padding: 12px;
+        border-top: 1px solid #e2e8f0;
+        background: white;
+    }
+
+    .ai-chat-input {
+        flex: 1;
+        min-width: 0;
+        padding: 11px;
+        border: 1px solid #cbd5e1;
+        border-radius: 9px;
+        outline: none;
+        font-size: 14px;
+    }
+
+    .ai-chat-send {
+        background: #2457d6;
+        color: white;
+        border: none;
+        border-radius: 9px;
+        padding: 0 15px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .ai-chat-send:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    @media (max-width: 480px) {
+        .ai-chat-window {
+            right: 10px;
+            bottom: 85px;
+            width: calc(100% - 20px);
+            height: 70vh;
+        }
+
+        .ai-chat-button {
+            right: 15px;
+            bottom: 15px;
+        }
+    }
+
+
+/* AI code block styling */
+.ai-message pre {
+    position: relative;
+    background: #0f172a;
+    border-radius: 10px;
+    padding: 40px 14px 14px;
+    margin: 12px 0;
+    overflow-x: auto;
+}
+
+.ai-message pre code {
+    font-size: 13px;
+    line-height: 1.6;
+    font-family: Consolas, monospace;
+}
+
+.ai-code-copy {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #334155;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.ai-code-copy:hover {
+    background: #475569;
+}
+
+.ai-message pre code.hljs {
+    background: transparent;
+    padding: 0;
+}
+</style>
+<button class="ai-chat-button" id="aiChatToggle">
+    ✨ Ask LearnSmart AI
+</button>
+
+<div class="ai-chat-window" id="aiChatWindow">
+
+    <div class="ai-chat-header">
+        <div>
+            <h3>LearnSmart AI Assistant</h3>
+            <p>Your personal learning companion</p>
+        </div>
+
+        <button class="ai-chat-close" id="aiChatClose">&times;</button>
+    </div>
+
+    <div class="ai-chat-messages" id="aiChatMessages">
+        <div class="ai-message bot">
+            Hello! 👋 I'm your LearnSmart AI Assistant.
+
+            Ask me anything about Python, DSA, OOP or your studies!
+        </div>
+    </div>
+
+    <div class="ai-chat-input-area">
+        <input
+            type="text"
+            class="ai-chat-input"
+            id="aiChatInput"
+            placeholder="Ask your question..."
+            maxlength="2000"
+        >
+
+        <button class="ai-chat-send" id="aiChatSend">
+            Send
+        </button>
+    </div>
+
+</div>
+<!-- Markdown renderer -->
+<script src="https://cdn.jsdelivr.net/npm/marked@18.2.0/lib/marked.umd.js"></script>
+
+<!-- HTML sanitizer -->
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.3.1/dist/purify.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.12.0/styles/github-dark.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.12.0/highlight.min.js"></script>
+<script>
+(function () {
+    const toggle = document.getElementById("aiChatToggle");
+    const close = document.getElementById("aiChatClose");
+    const windowBox = document.getElementById("aiChatWindow");
+    const input = document.getElementById("aiChatInput");
+    const send = document.getElementById("aiChatSend");
+    const messages = document.getElementById("aiChatMessages");
+
+
+function renderMarkdown(element, text) {
+    if (
+        typeof marked !== "undefined" &&
+        typeof DOMPurify !== "undefined"
+    ) {
+        // Remove unwanted standalone "Copy" text after code blocks
+const cleanedText = text.replace(
+    /(```[^\n]*\n[\s\S]*?```)\s*Copy\b/g,
+    "$1"
+);
+
+const formattedHTML = marked.parse(cleanedText);
+
+        element.innerHTML = DOMPurify.sanitize(formattedHTML);
+
+        // Highlight code blocks
+        element.querySelectorAll("pre code").forEach(function (code) {
+            if (typeof hljs !== "undefined") {
+                hljs.highlightElement(code);
+            }
+
+            // Create copy button
+            const pre = code.parentElement;
+
+            const copyButton = document.createElement("button");
+            copyButton.className = "ai-code-copy";
+            copyButton.textContent = "Copy";
+
+            copyButton.addEventListener("click", async function () {
+                try {
+                    await navigator.clipboard.writeText(code.textContent);
+                    copyButton.textContent = "Copied!";
+
+                    setTimeout(function () {
+                        copyButton.textContent = "Copy";
+                    }, 1500);
+
+                } catch (error) {
+                    copyButton.textContent = "Copy failed";
+                }
+            });
+
+            pre.appendChild(copyButton);
+        });
+
+    } else {
+        element.textContent = text;
+    }
+}
+
+
+function addMessage(text, sender) {
+    const message = document.createElement("div");
+    message.className = "ai-message " + sender;
+
+    if (sender === "bot") {
+        renderMarkdown(message, text);
+    } else {
+        message.textContent = text;
+    }
+
+    messages.appendChild(message);
+    messages.scrollTop = messages.scrollHeight;
+
+    return message;
+}
+
+    toggle.addEventListener("click", function () {
+        windowBox.classList.toggle("open");
+
+        if (windowBox.classList.contains("open")) {
+            input.focus();
+        }
+    });
+
+    close.addEventListener("click", function () {
+        windowBox.classList.remove("open");
+    });
+
+    async function sendMessage() {
+        const message = input.value.trim();
+
+        if (!message || send.disabled) {
+            return;
+        }
+
+        addMessage(message, "user");
+        input.value = "";
+        send.disabled = true;
+        send.textContent = "...";
+
+        const loadingMessage = addMessage(
+            "Thinking...",
+            "bot"
+        );
+
+        try {
+            const response = await fetch("/ai-chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    message: message
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+    renderMarkdown(loadingMessage, data.reply);
+} else {
+    loadingMessage.textContent =
+        data.error || "Something went wrong. Please try again.";
+}
+
+        } catch (error) {
+            loadingMessage.textContent =
+                "Unable to connect. Please try again.";
+        } finally {
+            send.disabled = false;
+            send.textContent = "Send";
+            messages.scrollTop = messages.scrollHeight;
+            input.focus();
+        }
+    }
+
+    send.addEventListener("click", sendMessage);
+
+    input.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            sendMessage();
+        }
+    });
+})();
+</script>

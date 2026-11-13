@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Marks | LearnSmart AI</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5ff;
+            color: #1e293b;
+
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 30px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2457d6;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin: 18px 0 8px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 13px;
+            background: #2457d6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1743b5;
+        }
+
+        .message {
+            background: #fff3cd;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 7px;
+            color: #765b00;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #2457d6;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'navbar.html' %}
+
+    <div class="container">
+
+        <h1>Academic Performance</h1>
+
+        <p class="subtitle">
+            Enter your subject-wise academic marks
+        </p>
+
+        {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('marks') }}">
+
+            <label>Subject Name</label>
+            <input type="text"
+                   name="subject"
+                   placeholder="e.g. Mathematics"
+                   maxlength="100"
+                   required>
+
+            <label>Marks Entry Method</label>
+            <select name="assessment_type" id="assessment_type" required>
+                <option value="">Choose method</option>
+                <option value="Internal">Internal Assessment</option>
+                <option value="Mid-Semester">Mid-Semester</option>
+                <option value="End-Semester">End-Semester</option>
+                <option value="Total">Direct Total Marks</option>
+            </select>
+
+            <label>Obtained Marks</label>
+            <input type="number"
+                   name="obtained_marks"
+                   min="0"
+                   step="0.01"
+                   placeholder="Enter marks obtained"
+                   required>
+
+            <label>Maximum Marks</label>
+            <input type="number"
+                   name="maximum_marks"
+                   min="0.01"
+                   step="0.01"
+                   placeholder="Enter maximum marks"
+                   required>
+
+            <button type="submit">Save Academic Marks</button>
+
+        </form>
+        <hr>
+
+<h2>Academic Marks History</h2>
+
+{% if marks_records %}
+
+<table border="1" cellpadding="10" cellspacing="0"
+       style="width:100%; border-collapse:collapse;">
+
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Assessment</th>
+            <th>Obtained Marks</th>
+            <th>Maximum Marks</th>
+            <th>Percentage</th>
+            <th>Performance</th>
+            <th>Recommendation</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for mark in marks_records %}
+        <tr>
+            <td>{{ mark.subject }}</td>
+            <td>{{ mark.assessment_type }}</td>
+            <td>{{ mark.obtained_marks }}</td>
+            <td>{{ mark.maximum_marks }}</td>
+            <td>{{ "%.2f"|format(mark.percentage) }}%</td>
+            <td>{{ mark.performance }}</td>
+            <td>{{ mark.recommendation }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% else %}
+
+<p>No academic marks have been entered yet.</p>
+
+{% endif %}
+
+        <a class="back-link" href="{{ url_for('dashboard') }}">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</body>
+</html>
