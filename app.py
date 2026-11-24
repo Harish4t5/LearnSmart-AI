@@ -303,6 +303,100 @@ def dashboard():
         learning_summary=learning_summary
     )
 
+
+@app.route("/syllabus")
+def syllabus():
+    if "student_id" not in session:
+        return redirect(url_for("login"))
+
+    connection = get_db_connection()
+
+    student = connection.execute(
+        "SELECT branch, semester FROM students WHERE id = ?",
+        (session["student_id"],)
+    ).fetchone()
+
+    if student is None:
+        connection.close()
+        flash("Student account not found.", "error")
+        return redirect(url_for("login"))
+
+    branch_map = {
+        "CSE AI/ML": "CSE-AIML",
+        "CSE-AIML": "CSE-AIML",
+        "EEE": "EEE",
+        "EE": "EEE"
+    }
+
+    branch_code = branch_map.get(student["branch"])
+
+    # Read selected semester from the URL
+    selected_semester = request.args.get(
+        "semester",
+        default=student["semester"],
+        type=int
+    )
+
+    if selected_semester not in [1, 2, 3, 4]:
+        selected_semester = student["semester"]
+
+    if selected_semester not in [1, 2, 3, 4]:
+        selected_semester = 1
+
+    if branch_code is None:
+        connection.close()
+        return render_template(
+            "syllabus.html",
+            available=False,
+            student=student,
+            subjects=[],
+            selected_semester=selected_semester
+        )
+
+    subjects = connection.execute("""
+        SELECT
+            subjects.id,
+            subjects.course_code,
+            subjects.subject_name,
+            subjects.credits
+        FROM subjects
+        JOIN semesters ON subjects.semester_id = semesters.id
+        JOIN curricula ON semesters.curriculum_id = curricula.id
+        JOIN branches ON curricula.branch_id = branches.id
+        WHERE branches.branch_code = ?
+          AND semesters.semester_number = ?
+          AND subjects.subject_type = 'Theory'
+        ORDER BY subjects.course_code
+    """, (branch_code, selected_semester)).fetchall()
+
+    syllabus_data = []
+
+    for subject in subjects:
+        units = connection.execute("""
+            SELECT unit_title
+            FROM syllabus_units
+            WHERE subject_id = ?
+            ORDER BY id
+        """, (subject["id"],)).fetchall()
+
+        syllabus_data.append({
+            "course_code": subject["course_code"],
+            "subject_name": subject["subject_name"],
+            "credits": subject["credits"],
+            "units": units
+        })
+
+    connection.close()
+
+    return render_template(
+        "syllabus.html",
+        available=True,
+        student=student,
+        subjects=syllabus_data,
+        selected_semester=selected_semester
+    )
+
+
 @app.route("/analytics")
 def analytics():
 
@@ -785,6 +879,7 @@ def marks():
     )
 
 
+
 @app.route("/quiz")
 def quiz():
 
@@ -795,26 +890,51 @@ def quiz():
     connection = get_db_connection()
 
     try:
-        # Fetch all available subjects
+        # Get the logged-in student's branch and semester
+        student = connection.execute("""
+            SELECT branch, semester
+            FROM students
+            WHERE id = ?
+        """, (session["student_id"],)).fetchone()
+
+        if student is None:
+            flash("Student account not found.")
+            return redirect(url_for("login"))
+
+        # Convert registered branch into syllabus branch code
+        branch_map = {
+            "CSE AI/ML": "CSE-AIML",
+            "CSE-AIML": "CSE-AIML",
+            "EEE": "EEE",
+            "EE": "EEE"
+        }
+
+        branch_code = branch_map.get(student["branch"])
+        semester = student["semester"]
+
+        # Fetch only subjects assigned to this branch and semester
         subjects = connection.execute("""
             SELECT DISTINCT subject
             FROM quiz_questions
+            WHERE branch_code = ?
+              AND semester = ?
             ORDER BY subject
-        """).fetchall()
+        """, (branch_code, semester)).fetchall()
 
-        available_subjects = [row["subject"] for row in subjects]
+        available_subjects = [
+            row["subject"] for row in subjects
+        ]
 
-        # Read selected subject from URL
-        selected_subject = request.args.get("subject", "Python")
+        # Select a valid subject
+        selected_subject = request.args.get("subject", "")
 
         if selected_subject not in available_subjects:
             selected_subject = (
-                "Python" if "Python" in available_subjects
-                else available_subjects[0] if available_subjects
-                else ""
+                available_subjects[0]
+                if available_subjects else ""
             )
 
-        # Read selected difficulty from URL
+        # Validate difficulty
         selected_difficulty = request.args.get(
             "difficulty", "All Levels"
         )
@@ -829,30 +949,43 @@ def quiz():
         if selected_difficulty not in valid_difficulties:
             selected_difficulty = "All Levels"
 
-        # Fetch questions based on subject and difficulty
-        if selected_difficulty == "All Levels":
+        # Fetch questions for the selected subject
+        if selected_subject:
 
-            questions = connection.execute("""
-                SELECT id, subject, topic, question,
-                       option_a, option_b, option_c, option_d
-                FROM quiz_questions
-                WHERE subject = ?
-                ORDER BY id
-            """, (selected_subject,)).fetchall()
+            if selected_difficulty == "All Levels":
+                questions = connection.execute("""
+                    SELECT id, subject, topic, question,
+                           option_a, option_b, option_c, option_d
+                    FROM quiz_questions
+                    WHERE branch_code = ?
+                      AND semester = ?
+                      AND subject = ?
+                    ORDER BY id
+                """, (
+                    branch_code,
+                    semester,
+                    selected_subject
+                )).fetchall()
+
+            else:
+                questions = connection.execute("""
+                    SELECT id, subject, topic, question,
+                           option_a, option_b, option_c, option_d
+                    FROM quiz_questions
+                    WHERE branch_code = ?
+                      AND semester = ?
+                      AND subject = ?
+                      AND difficulty = ?
+                    ORDER BY id
+                """, (
+                    branch_code,
+                    semester,
+                    selected_subject,
+                    selected_difficulty
+                )).fetchall()
 
         else:
-
-            questions = connection.execute("""
-                SELECT id, subject, topic, question,
-                       option_a, option_b, option_c, option_d
-                FROM quiz_questions
-                WHERE subject = ?
-                  AND difficulty = ?
-                ORDER BY id
-            """, (
-                selected_subject,
-                selected_difficulty
-            )).fetchall()
+            questions = []
 
     finally:
         connection.close()
@@ -866,6 +999,8 @@ def quiz():
     )
 
 
+
+
 @app.route("/submit_quiz", methods=["POST"])
 def submit_quiz():
 
@@ -874,6 +1009,7 @@ def submit_quiz():
         return redirect(url_for("login"))
 
     selected_subject = request.form.get("subject", "").strip()
+
     selected_difficulty = request.form.get(
         "difficulty", "All Levels"
     )
@@ -892,7 +1028,50 @@ def submit_quiz():
     connection = get_db_connection()
 
     try:
-        # Fetch only the questions included in this quiz
+        # Get the logged-in student's branch and semester
+        student = connection.execute("""
+            SELECT branch, semester
+            FROM students
+            WHERE id = ?
+        """, (session["student_id"],)).fetchone()
+
+        if student is None:
+            flash("Student account not found.")
+            return redirect(url_for("login"))
+
+        # Convert registered branch into syllabus branch code
+        branch_map = {
+            "CSE AI/ML": "CSE-AIML",
+            "CSE-AIML": "CSE-AIML",
+            "EEE": "EEE",
+            "EE": "EEE"
+        }
+
+        branch_code = branch_map.get(student["branch"])
+        semester = student["semester"]
+
+        if not branch_code:
+            flash("Quiz is not available for your branch yet.")
+            return redirect(url_for("dashboard"))
+
+        # Verify that the selected subject belongs to this student
+        available_subject = connection.execute("""
+            SELECT DISTINCT subject
+            FROM quiz_questions
+            WHERE branch_code = ?
+              AND semester = ?
+              AND subject = ?
+        """, (
+            branch_code,
+            semester,
+            selected_subject
+        )).fetchone()
+
+        if available_subject is None:
+            flash("Invalid subject selection.")
+            return redirect(url_for("quiz"))
+
+        # Fetch only questions for the student's branch and semester
         if selected_difficulty == "All Levels":
 
             questions = connection.execute("""
@@ -900,9 +1079,15 @@ def submit_quiz():
                        option_a, option_b, option_c, option_d,
                        correct_answer
                 FROM quiz_questions
-                WHERE subject = ?
+                WHERE branch_code = ?
+                  AND semester = ?
+                  AND subject = ?
                 ORDER BY id
-            """, (selected_subject,)).fetchall()
+            """, (
+                branch_code,
+                semester,
+                selected_subject
+            )).fetchall()
 
         else:
 
@@ -911,10 +1096,14 @@ def submit_quiz():
                        option_a, option_b, option_c, option_d,
                        correct_answer
                 FROM quiz_questions
-                WHERE subject = ?
+                WHERE branch_code = ?
+                  AND semester = ?
+                  AND subject = ?
                   AND difficulty = ?
                 ORDER BY id
             """, (
+                branch_code,
+                semester,
                 selected_subject,
                 selected_difficulty
             )).fetchall()
@@ -1016,6 +1205,7 @@ def submit_quiz():
                 percentage
             ))
 
+            # Find the previous attempt for this topic
             previous_attempt = connection.execute("""
                 SELECT tp.performance_percentage
                 FROM topic_performance AS tp
@@ -1072,7 +1262,6 @@ def submit_quiz():
         topic_results=topic_results
     )
 
-
 @app.route("/study-materials")
 def study_materials():
 
@@ -1083,16 +1272,52 @@ def study_materials():
     connection = get_db_connection()
 
     try:
-        # Fetch available subjects
-        subjects = connection.execute("""
-            SELECT DISTINCT subject
-            FROM learning_resources
-            ORDER BY subject
-        """).fetchall()
+        # Step 1: Get logged-in student's branch and semester
+        student = connection.execute("""
+            SELECT branch, semester
+            FROM students
+            WHERE id = ?
+        """, (session["student_id"],)).fetchone()
 
-        selected_subject = request.args.get("subject", "All Subjects")
-        selected_topic = request.args.get("topic", "All Topics")
-        selected_level = request.args.get("level", "All Levels")
+        if not student:
+            flash("Student details not found. Please log in again.")
+            return redirect(url_for("login"))
+
+        student_branch = student["branch"]
+        student_semester = student["semester"]
+
+        # Step 2: Map registered branch to database branch code
+        branch_mapping = {
+            "CSE AI/ML": "CSE-AIML",
+            "CSE-AIML": "CSE-AIML",
+            "EEE": "EEE",
+            "EE": "EEE"
+        }
+
+        branch_code = branch_mapping.get(student_branch)
+
+        # Step 3: Read selected filters
+        selected_subject = request.args.get(
+            "subject", "All Subjects"
+        )
+        selected_topic = request.args.get(
+            "topic", "All Topics"
+        )
+        selected_level = request.args.get(
+            "level", "All Levels"
+        )
+
+        # Step 4: Fetch subjects for this branch and semester only
+        if branch_code:
+            subjects = connection.execute("""
+                SELECT DISTINCT subject
+                FROM learning_resources
+                WHERE branch_code = ?
+                AND semester = ?
+                ORDER BY subject
+            """, (branch_code, student_semester)).fetchall()
+        else:
+            subjects = []
 
         available_subjects = [
             row["subject"] for row in subjects
@@ -1101,20 +1326,31 @@ def study_materials():
         if selected_subject not in available_subjects:
             selected_subject = "All Subjects"
 
-        # Fetch topics for the selected subject
-        if selected_subject == "All Subjects":
-            topics = connection.execute("""
-                SELECT DISTINCT topic
-                FROM learning_resources
-                ORDER BY topic
-            """).fetchall()
+        # Step 5: Fetch topics for the selected subject
+        topic_query = """
+            SELECT DISTINCT topic
+            FROM learning_resources
+            WHERE branch_code = ?
+            AND semester = ?
+        """
+
+        topic_parameters = [
+            branch_code,
+            student_semester
+        ]
+
+        if selected_subject != "All Subjects":
+            topic_query += " AND subject = ?"
+            topic_parameters.append(selected_subject)
+
+        topic_query += " ORDER BY topic"
+
+        if branch_code:
+            topics = connection.execute(
+                topic_query, topic_parameters
+            ).fetchall()
         else:
-            topics = connection.execute("""
-                SELECT DISTINCT topic
-                FROM learning_resources
-                WHERE subject = ?
-                ORDER BY topic
-            """, (selected_subject,)).fetchall()
+            topics = []
 
         available_topics = [
             row["topic"] for row in topics
@@ -1123,15 +1359,19 @@ def study_materials():
         if selected_topic not in available_topics:
             selected_topic = "All Topics"
 
-        # Fetch learning materials
+        # Step 6: Fetch learning materials
         query = """
             SELECT subject, topic, level, resource_type,
                    title, url, description
             FROM learning_resources
-            WHERE 1 = 1
+            WHERE branch_code = ?
+            AND semester = ?
         """
 
-        parameters = []
+        parameters = [
+            branch_code,
+            student_semester
+        ]
 
         if selected_subject != "All Subjects":
             query += " AND subject = ?"
@@ -1154,9 +1394,12 @@ def study_materials():
             END
         """
 
-        resources = connection.execute(
-            query, parameters
-        ).fetchall()
+        if branch_code:
+            resources = connection.execute(
+                query, parameters
+            ).fetchall()
+        else:
+            resources = []
 
     finally:
         connection.close()
@@ -1170,6 +1413,7 @@ def study_materials():
         selected_level=selected_level,
         resources=resources
     )
+
 
 
 @app.route("/ai-chat", methods=["POST"])
@@ -1201,6 +1445,7 @@ def ai_chat():
             "error": "Message is too long. Please keep it under 2000 characters."
         }), 400
 
+    
     connection = get_db_connection()
 
     try:
@@ -1210,6 +1455,43 @@ def ai_chat():
             WHERE id = ?
         """, (session["student_id"],)).fetchone()
 
+        syllabus_subjects = []
+
+        if student is not None:
+
+            branch_map = {
+                "CSE AI/ML": "CSE-AIML",
+                "CSE-AIML": "CSE-AIML",
+                "EEE": "EEE",
+                "EE": "EEE"
+            }
+
+            branch_code = branch_map.get(student["branch"])
+
+            if branch_code:
+                syllabus_subjects = connection.execute("""
+                    SELECT
+                        subjects.course_code,
+                        subjects.subject_name,
+                        syllabus_units.unit_title
+                    FROM subjects
+                    JOIN semesters
+                        ON subjects.semester_id = semesters.id
+                    JOIN curricula
+                        ON semesters.curriculum_id = curricula.id
+                    JOIN branches
+                        ON curricula.branch_id = branches.id
+                    LEFT JOIN syllabus_units
+                        ON syllabus_units.subject_id = subjects.id
+                    WHERE branches.branch_code = ?
+                      AND semesters.semester_number = ?
+                      AND subjects.subject_type = 'Theory'
+                    ORDER BY subjects.course_code, syllabus_units.id
+                """, (
+                    branch_code,
+                    student["semester"]
+                )).fetchall()
+
     finally:
         connection.close()
 
@@ -1218,8 +1500,18 @@ def ai_chat():
             "error": "Student account not found."
         }), 404
 
+    # Convert syllabus database rows into readable text
+    syllabus_context = "\n".join(
+        f"- {row['course_code']} | {row['subject_name']} | {row['unit_title'] or 'Units not added yet'}"
+        for row in syllabus_subjects
+    )
+
+    if not syllabus_context:
+        syllabus_context = "No syllabus data available for this student's branch and semester."
+
     # Prepare the AI instruction and student context
     prompt = f"""
+
     You are LearnSmart AI, a friendly and helpful academic assistant
     for B.Tech students.
 
@@ -1227,6 +1519,12 @@ def ai_chat():
     Name: {student['full_name']}
     Branch: {student['branch']}
     Semester: {student['semester']}
+        Current semester syllabus:
+    {syllabus_context}
+
+    Use this syllabus as reference when answering academic questions.
+    Do not invent official course codes, subject names, or unit titles.
+    If syllabus information is unavailable, clearly say so.
 
     Your responsibilities:
     1. Explain Python, DSA, OOP, DBMS and other engineering subjects.

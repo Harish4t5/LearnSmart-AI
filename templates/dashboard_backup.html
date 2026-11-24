@@ -1,0 +1,1092 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | LearnSmart AI</title>
+
+    <style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f5f7fc;
+    color: #1e293b;
+    line-height: 1.6;
+}
+
+
+
+/* Main Container */
+.container {
+    max-width: 1200px;
+    margin: 35px auto;
+    padding: 0 22px;
+}
+
+/* Welcome */
+.welcome {
+    margin-bottom: 30px;
+    padding: 38px;
+    background: linear-gradient(120deg, #173b8f, #2457d6, #6288ed);
+    border-radius: 18px;
+    color: #ffffff;
+    box-shadow: 0 10px 30px rgba(36, 87, 214, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome h1 {
+    color: #ffffff !important;
+    margin-bottom: 10px;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.welcome p {
+    color: #ffffff !important;
+    font-size: 16px;
+    line-height: 1.6;
+    opacity: 1;
+}
+
+
+
+/* Profile */
+.profile {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.05);
+    border: 1px solid #e5eaf5;
+}
+
+.profile h2 {
+    font-size: 23px;
+    margin-bottom: 22px;
+    color: #172554;
+}
+
+.detail {
+    background: #f8faff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e5eaf5;
+    transition: all 0.25s ease;
+}
+
+.detail:hover {
+    transform: translateY(-4px);
+    border-color: #93b4ff;
+    box-shadow: 0 8px 20px rgba(36, 87, 214, 0.08);
+}
+
+.detail p {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.detail h3 {
+    color: #172554;
+    font-size: 16px;
+}
+
+.profile h2 {
+    margin-bottom: 22px;
+    color: #172554;
+}
+
+.details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+}
+
+.detail {
+    background: #f5f8ff;
+    padding: 18px;
+    border-radius: 11px;
+    border: 1px solid #e7edfa;
+    transition: 0.3s;
+}
+
+.detail:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(37,99,235,0.08);
+}
+
+.detail p {
+    color: #64748b;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.detail h3 {
+    font-size: 17px;
+    overflow-wrap: anywhere;
+    color: #172554;
+}
+
+/* Section Headings */
+.section-title {
+    margin: 35px 0 18px;
+    color: #172554;
+}
+.section-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 38px 0 20px;
+    color: #172554;
+}
+
+/* Feature Cards */
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.feature {
+    background: #ffffff;
+    padding: 28px;
+    border-radius: 16px;
+    border: 1px solid #e5eaf5;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.035);
+    transition: all 0.25s ease;
+    min-height: 175px;
+}
+
+.feature:hover {
+    transform: translateY(-6px);
+    border-color: #93b4ff;
+    box-shadow: 0 12px 28px rgba(36, 87, 214, 0.09);
+}
+
+.feature h3 {
+    color: #2457d6;
+    font-size: 17px;
+    margin-bottom: 12px;
+}
+
+.feature p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* Existing Dashboard Cards */
+.question-card {
+    background: #ffffff;
+    padding: 24px;
+    margin: 18px 0;
+    border-radius: 14px;
+    border: 1px solid #e8edf5;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.04);
+    transition: 0.3s;
+}
+
+.question-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 24px rgba(37,99,235,0.08);
+}
+
+.question-card h3 {
+    color: #2457d6;
+    margin-bottom: 12px;
+}
+
+.question-card p {
+    margin: 7px 0;
+    color: #475569;
+}
+
+/* Learning Resources */
+.resource-item {
+    background: #f5f8ff;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 10px;
+}
+
+.resource-item h5 {
+    color: #2457d6;
+    margin-bottom: 6px;
+}
+
+.resource-item a {
+    color: #1d4ed8;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.resource-item a:hover {
+    text-decoration: underline;
+}
+
+.resource-item p {
+    color: #64748b;
+    margin-top: 7px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 28px;
+    color: #64748b;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+
+
+    .container {
+        margin: 22px auto;
+        padding: 0 15px;
+    }
+
+    .welcome {
+        padding: 22px;
+    }
+
+    .welcome h1 {
+        font-size: 24px;
+    }
+
+    .profile {
+        padding: 20px;
+    }
+
+    .details {
+        grid-template-columns: 1fr;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 450px) {
+
+
+    .welcome h1 {
+        font-size: 21px;
+    }
+}
+/* Overall Learning Summary */
+.learning-summary {
+    background: white;
+    padding: 25px;
+    border-radius: 14px;
+    margin: 25px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.learning-summary h2 {
+    color: #2457d6;
+    margin-bottom: 20px;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+}
+
+.summary-card {
+    padding: 20px;
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.08);
+}
+
+.summary-card h3 {
+    margin-bottom: 12px;
+    font-size: 16px;
+}
+
+.summary-card h2 {
+    color: #1e293b;
+    margin: 0;
+    font-size: 28px;
+}
+
+.summary-blue {
+    background: #eff6ff;
+}
+
+.summary-green {
+    background: #f0fdf4;
+}
+
+.summary-orange {
+    background: #fff7ed;
+}
+/* Enhanced Learning Summary Cards */
+
+.learning-summary {
+    border: 1px solid #e5eaf5;
+}
+
+.learning-summary h2 {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.summary-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.summary-card {
+    padding: 25px;
+    border: 1px solid #e5eaf5;
+    border-radius: 14px;
+    min-height: 135px;
+}
+
+.summary-card h3 {
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.summary-card h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #172554;
+}
+
+.summary-blue {
+    border-left: 5px solid #3b82f6;
+}
+
+.summary-green {
+    border-left: 5px solid #22c55e;
+}
+
+.summary-orange {
+    border-left: 5px solid #f59e0b;
+}
+
+@media (max-width: 650px) {
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* Student Improvement Tracker */
+
+/* Student Improvement Tracker */
+.improvement-section {
+    background: #ffffff;
+    padding: 30px;
+    margin: 30px 0;
+    border-radius: 18px;
+    border: 1px solid #e5eaf5;
+    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.05);
+}
+
+.improvement-title {
+    color: #172554;
+    font-size: 23px;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+
+.improvement-card {
+    background: #f8faff;
+    padding: 24px;
+    border-radius: 14px;
+    margin-bottom: 18px;
+    border: 1px solid #e5eaf5;
+    transition: all 0.25s ease;
+}
+
+.improvement-card:hover {
+    transform: translateY(-4px);
+    border-color: #93b4ff;
+    box-shadow: 0 10px 24px rgba(36, 87, 214, 0.08);
+}
+
+.improvement-card h3 {
+    color: #1e293b;
+    font-size: 17px;
+    margin-bottom: 12px;
+}
+
+.improvement-card p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-top: 8px;
+}
+
+.improvement-up {
+    color: #15803d;
+    font-weight: 700;
+}
+
+.improvement-down {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+.improvement-neutral {
+    color: #64748b;
+    font-weight: 600;
+}
+
+
+/* Topic-wise Performance */
+.topic-performance-section {
+    background: #ffffff;
+    padding: 30px;
+    margin: 30px 0;
+    border-radius: 18px;
+    border: 1px solid #e5eaf5;
+    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.05);
+}
+
+.topic-performance-title {
+    color: #172554;
+    font-size: 23px;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+
+.topic-performance-card {
+    background: #f8faff;
+    padding: 24px;
+    border-radius: 14px;
+    margin-bottom: 18px;
+    border: 1px solid #e5eaf5;
+    transition: all 0.25s ease;
+}
+
+.topic-performance-card:hover {
+    transform: translateY(-4px);
+    border-color: #93b4ff;
+    box-shadow: 0 10px 24px rgba(36, 87, 214, 0.08);
+}
+
+.topic-performance-card h3 {
+    margin-bottom: 14px;
+    color: #172554;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.topic-performance-card p {
+    margin-bottom: 12px;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* Topic Performance Progress Bars */
+.progress-track {
+    width: 100%;
+    height: 12px;
+    background: #e2e8f0;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 14px 0 18px;
+    box-shadow: inset 0 2px 4px rgba(15, 23, 42, 0.06);
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 20px;
+    transition: width 0.7s ease;
+    box-shadow: 0 2px 6px rgba(36, 87, 214, 0.15);
+}
+
+.performance-weak {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+.performance-medium {
+    color: #d97706;
+    font-weight: 700;
+}
+
+.performance-strong {
+    color: #16a34a;
+    font-weight: 700;
+}
+
+
+
+/* Personalized Learning Recommendations */
+.recommendations-section {
+    background: #ffffff;
+    padding: 30px;
+    margin: 30px 0;
+    border-radius: 18px;
+    border: 1px solid #e5eaf5;
+    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.05);
+}
+
+.recommendations-title {
+    color: #172554;
+    font-size: 23px;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+
+.recommendation-card {
+    background: #f8faff;
+    border: 1px solid #e5eaf5;
+    padding: 26px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    transition: all 0.25s ease;
+}
+
+.recommendation-card:hover {
+    transform: translateY(-4px);
+    border-color: #93b4ff;
+    box-shadow: 0 10px 24px rgba(36, 87, 214, 0.08);
+}
+
+.recommendation-card h3 {
+    color: #172554;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.recommendation-card p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 12px;
+}
+
+.recommendation-card h4 {
+    color: #2457d6;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 18px 0 14px;
+}
+
+.recommendation-practice {
+    background: #eef4ff;
+    padding: 16px;
+    border-radius: 10px;
+    border-left: 4px solid #2457d6;
+    color: #334155;
+    line-height: 1.7;
+}
+
+.recommendation-divider {
+    border: none;
+    border-top: 1px solid #e2e8f0;
+    margin: 22px 0;
+}
+
+/* Learning Resource Cards */
+.resource-item {
+    background: #ffffff;
+    padding: 18px;
+    margin: 14px 0;
+    border: 1px solid #e5eaf5;
+    border-radius: 12px;
+    transition: all 0.25s ease;
+}
+
+.resource-item:hover {
+    transform: translateY(-3px);
+    border-color: #93b4ff;
+    box-shadow: 0 7px 18px rgba(36, 87, 214, 0.08);
+}
+
+.resource-item h5 {
+    display: inline-block;
+    background: #eef4ff;
+    color: #2457d6;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.resource-item a {
+    display: block;
+    color: #2457d6;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    margin-bottom: 8px;
+    transition: color 0.2s ease;
+}
+
+.resource-item a:hover {
+    color: #173b8f;
+    text-decoration: underline;
+}
+
+.resource-item p {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+
+/* Performance Analytics Chart */
+.analytics-section {
+    background: white;
+    padding: 25px;
+    margin: 25px 0;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.analytics-title {
+    color: #2457d6;
+    margin-bottom: 20px;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    max-width: 100%;
+}
+
+@media (max-width: 600px) {
+    .chart-container {
+        height: 280px;
+    }
+}
+    </style>
+</head>
+
+<body>
+
+    {% include 'navbar.html' %}
+
+    <div class="container">
+
+        <div class="welcome">
+            <h1>Welcome, {{ student.full_name }}! 👋</h1>
+            <p>Your personalized learning journey starts here.</p>
+        </div>
+
+        <div class="profile">
+
+<!-- OVERALL LEARNING SUMMARY -->
+<section class="learning-summary">
+
+    <h2>📊 Overall Learning Summary</h2>
+
+    <div class="summary-grid">
+
+        <div class="summary-card summary-blue">
+            <h3>Total Quiz Attempts</h3>
+            <h2>{{ learning_summary.total_quiz_attempts }}</h2>
+        </div>
+
+        <div class="summary-card summary-green">
+            <h3>Average Quiz Score</h3>
+            <h2>{{ learning_summary.average_quiz_score }}%</h2>
+        </div>
+
+        <div class="summary-card summary-orange">
+            <h3>Topics Practiced</h3>
+            <h2>{{ learning_summary.topics_tracked }}</h2>
+        </div>
+
+    </div>
+
+</section>
+<!-- PERFORMANCE ANALYTICS -->
+
+
+            <h2>My Academic Profile</h2>
+
+            <div class="details">
+
+                <div class="detail">
+                    <p>Full Name</p>
+                    <h3>{{ student.full_name }}</h3>
+                </div>
+
+                <div class="detail">
+                    <p>Email Address</p>
+                    <h3>{{ student.email }}</h3>
+                </div>
+
+                <div class="detail">
+                    <p>College Name</p>
+                    <h3>{{ student.college_name }}</h3>
+                </div>
+
+                <div class="detail">
+                    <p>Engineering Branch</p>
+                    <h3>{{ student.branch }}</h3>
+                </div>
+
+                <div class="detail">
+                    <p>Current Semester</p>
+                    <h3>{{ student.semester }}</h3>
+                </div>
+
+            </div>
+        </div>
+
+        <h2 class="section-title">Your Learning Space</h2>
+        <a href="{{ url_for('marks') }}"
+   style="display:inline-block;
+   background:#2457d6;
+   color:white;
+   padding:12px 20px;
+   border-radius:8px;
+   text-decoration:none;
+   margin-bottom:20px;">
+
+    + Enter Academic Marks
+
+
+</a>
+ <div class="features">
+    <!-- Academic Performance -->
+    <a class="feature"
+   href="{{ url_for('marks') }}"
+   style="display:block; color:inherit; text-decoration:none; cursor:pointer;">
+    <h3>📊 Academic Performance</h3>
+    <p>Track your marks and analyze your academic performance.</p>
+    </a>
+
+    <!-- Online Assessments -->
+    <a class="feature"
+   href="{{ url_for('quiz') }}"
+   style="display:block; color:inherit; text-decoration:none; cursor:pointer;">
+    <h3>📝 Online Assessments</h3>
+    <p>Take practice tests and evaluate your subject knowledge.</p>
+    </a>
+
+<!-- Personalized Learning -->
+    <a class="feature"
+   href="{{ url_for('study_materials') }}"
+   style="display:block; color:inherit; text-decoration:none; cursor:pointer;">
+    <h3>🎯 Personalized Learning</h3>
+    <p>Discover your weak topics and get suitable learning resources.</p>
+    </a>
+<!-- Personalized Learning -->
+
+<!-- Progress Tracking -->
+<a class="feature"
+   href="#improvement-tracker"
+   style="display:block; color:inherit; text-decoration:none; cursor:pointer;">
+    <h3>📈 Progress Tracking</h3>
+    <p>Monitor your learning progress and academic improvement.</p>
+</a>
+
+
+            <div class="feature">
+    <h3>📈 My Analytics</h3>
+    <p>View your quiz history, average scores, topic-wise performance and learning progress.</p>
+
+    <a href="{{ url_for('analytics') }}"
+       style="display:inline-block;
+       background:#2457d6;
+       color:white;
+       padding:9px 16px;
+       border-radius:6px;
+       text-decoration:none;
+       margin-top:10px;">
+        View Analytics
+    </a>
+</div>
+
+<div class="feature">
+    <h3>📚 Academic Syllabus</h3>
+    <p>Explore your semester-wise subjects and syllabus units.</p>
+
+    <a href="{{ url_for('syllabus') }}"
+       style="display:inline-block;
+       background:#2457d6;
+       color:white;
+       padding:9px 16px;
+       border-radius:6px;
+       text-decoration:none;
+       margin-top:10px;">
+        View Syllabus
+    </a>
+</div>
+        </div>
+        
+
+    </div>
+
+    <footer>
+        LearnSmart AI | Intelligent Personalized Learning System
+    </footer>
+<section style="
+    background:#f8faff;
+    padding:20px;
+    border-radius:12px;
+    margin-top:25px;
+">
+
+    <h2>🎯 Subjects That Need Improvement</h2>
+
+    {% if weak_subjects %}
+
+        <table border="1" cellpadding="10"
+               style="width:100%; border-collapse:collapse;">
+
+            <tr>
+                <th>Subject</th>
+                <th>Average Percentage</th>
+                <th>Status</th>
+            </tr>
+
+            {% for subject in weak_subjects %}
+
+            <tr>
+                <td>{{ subject.subject }}</td>
+
+                <td>
+                    {{ subject.average_percentage }}%
+                </td>
+
+                <td style="color:#dc2626;">
+                    Needs Improvement
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    {% else %}
+
+        <p>
+            Great job! No subjects currently need improvement.
+        </p>
+
+    {% endif %}
+
+</section>
+
+<section class="dashboard-section">
+
+<!-- STUDENT IMPROVEMENT TRACKER -->
+<section class="improvement-section" id="improvement-tracker">
+
+    <h2 class="improvement-title">
+        📈 Student Improvement Tracker
+    </h2>
+
+    {% if topic_progress %}
+
+        {% for item in topic_progress %}
+
+            <div class="improvement-card">
+
+                <h3>{{ item.topic }}</h3>
+
+                <p>
+                    Latest Score:
+                    <strong>{{ item.current_score }}%</strong>
+                </p>
+
+                {% if item.previous_score is not none %}
+
+                    <p>
+                        Previous Score:
+                        {{ item.previous_score }}%
+                    </p>
+
+                    {% if item.improvement > 0 %}
+
+                        <p class="improvement-up">
+                            <strong>
+                                ↑ Improved by {{ item.improvement }} percentage points
+                            </strong>
+                        </p>
+
+                    {% elif item.improvement < 0 %}
+
+                        <p class="improvement-down">
+                            <strong>
+                                ↓ Decreased by {{ item.improvement | abs }} percentage points
+                            </strong>
+                        </p>
+
+                    {% else %}
+
+                        <p class="improvement-neutral">
+                            No change in performance.
+                        </p>
+
+                    {% endif %}
+
+                {% else %}
+
+                    <p class="improvement-neutral">
+                        First attempt. Attempt another quiz to track improvement.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>
+            No quiz progress available yet. Attempt a quiz to start tracking.
+        </p>
+
+    {% endif %}
+
+</section>
+
+
+<h2 class="topic-performance-title">Topic-wise Performance</h2>
+
+{% if topic_performance %}
+    {% for topic in topic_performance %}
+        <div class="topic-performance-card">
+            <h3>{{ topic.topic }}</h3>
+
+            <p>
+                Average Score:
+                <strong>{{ topic.average_percentage }}%</strong>
+            </p>
+
+            <!-- Visual Progress Bar -->
+            <div class="progress-track">
+                <div class="progress-fill" style="
+                    width: {{ topic.average_percentage }}%;
+                    background:
+                    {% if topic.average_percentage < 60 %}
+                        #ef4444
+                    {% elif topic.average_percentage < 75 %}
+                        #f59e0b
+                    {% else %}
+                        #22c55e
+                    {% endif %};
+                "></div>
+            </div>
+
+            {% if topic.average_percentage < 60 %}
+                <p class="performance-weak">
+                    Needs Improvement - Focus on this topic.
+                </p>
+            {% elif topic.average_percentage < 75 %}
+                <p class="performance-medium">
+                    Good - More practice recommended.
+                </p>
+            {% else %}
+                <p class="performance-strong">
+                    Excellent - Keep it up!
+                </p>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No quiz performance available yet. Attempt a quiz to see your progress.</p>
+{% endif %}
+
+</section>
+<!-- PERSONALIZED LEARNING RECOMMENDATIONS -->
+<section class="recommendations-section">
+
+    <h2 class="recommendations-title">
+        🤖 Personalized Learning Recommendations
+    </h2>
+
+    {% if recommendations %}
+
+        {% for recommendation in recommendations %}
+
+            <div class="recommendation-card">
+
+                <h3>{{ recommendation.topic }}</h3>
+
+                <p>
+                    Current Performance:
+                    <strong>{{ recommendation.percentage }}%</strong>
+                </p>
+
+                <p>
+                    Learning Level:
+                    <strong>{{ recommendation.level }}</strong>
+                </p>
+
+                <p>{{ recommendation.message }}</p>
+
+                <p class="recommendation-practice">
+                    <strong>Recommended Practice:</strong>
+                    {{ recommendation.practice }}
+                </p>
+
+                {% if recommendation.resources %}
+
+                    <hr class="recommendation-divider">
+
+                    <h4>📚 Recommended Learning Resources</h4>
+
+                    {% for resource in recommendation.resources %}
+
+                        <div class="resource-item">
+
+                            <h5>{{ resource.resource_type }}</h5>
+
+                            <a href="{{ resource.url }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                {{ resource.title }}
+                            </a>
+
+                            {% if resource.description %}
+                                <p>{{ resource.description }}</p>
+                            {% endif %}
+
+                        </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <p>No learning resources available for this topic yet.</p>
+
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>
+            Attempt a quiz to receive personalized learning recommendations.
+        </p>
+
+    {% endif %}
+
+</section>
+
+</body>
+</html>

@@ -1,0 +1,463 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Syllabus | LearnSmart AI</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            color: #222;
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: #4056a1;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            color: #263b80;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .header p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .message {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            line-height: 1.8;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+            margin-bottom: 22px;
+        }
+
+        .message h2 {
+            color: #263b80;
+            margin-bottom: 8px;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .control-group select,
+        .control-group input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccd3e0;
+            border-radius: 8px;
+            background: white;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .control-group select:focus,
+        .control-group input:focus {
+            border-color: #4056a1;
+        }
+
+        .subject-details {
+            background: white;
+            margin-bottom: 16px;
+            border-radius: 12px;
+            border: 1px solid #e5eaf5;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .subject-summary {
+            padding: 20px 22px;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .subject-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .subject-summary h2 {
+            color: #263b80;
+            font-size: 19px;
+            margin-bottom: 7px;
+        }
+
+        .subject-summary p {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .expand-icon {
+            font-size: 22px;
+            transition: transform 0.2s;
+        }
+
+        .subject-details[open] .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .subject-content {
+            padding: 0 22px 22px;
+            border-top: 1px solid #edf0f7;
+        }
+
+        .subject-content h3 {
+            margin: 18px 0 12px;
+            color: #333;
+        }
+
+        .unit-list {
+            padding-left: 22px;
+            line-height: 1.9;
+        }
+
+        .empty-message {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            line-height: 1.8;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+        }
+
+        .empty-message h2 {
+            color: #263b80;
+            margin-bottom: 10px;
+        }
+
+        .no-results {
+            display: none;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            color: #666;
+        }
+
+        footer {
+            text-align: center;
+            color: #888;
+            margin-top: 35px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 12px;
+            }
+
+            .header h1 {
+                font-size: 23px;
+            }
+
+            .subject-summary {
+                padding: 17px;
+            }
+
+            .subject-content {
+                padding: 0 17px 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <a href="{{ url_for('dashboard') }}" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+        <div class="header">
+            <h1>📚 My Academic Syllabus</h1>
+
+            <p>
+                Explore your semester-wise subjects and syllabus units
+                with LearnSmart AI.
+            </p>
+        </div>
+
+
+        {% if not available %}
+
+            <div class="empty-message">
+                <h2>Content Not Available Yet!</h2>
+
+                <p>
+                    Syllabus content for your selected branch is not
+                    available right now.
+                </p>
+
+                <p>
+                    We're working on adding it soon. Stay tuned!
+                </p>
+            </div>
+
+
+        {% else %}
+
+            <div class="message">
+                <h2>Semester {{ selected_semester }}</h2>
+
+                <p>
+                    Branch: {{ student.branch }}
+                </p>
+            </div>
+
+
+            <!-- Semester Selector and Subject Search -->
+
+            <div class="controls">
+
+                <div class="control-group">
+
+                    <label for="semester">
+                        Select Semester
+                    </label>
+
+                    <select
+                        name="semester"
+                        id="semester"
+                        onchange="changeSemester(this.value)"
+                    >
+
+                        {% for sem in range(1, 5) %}
+
+                            <option
+                                value="{{ sem }}"
+                                {% if selected_semester == sem %}selected{% endif %}
+                            >
+                                Semester {{ sem }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <div class="control-group">
+
+                    <label for="subjectSearch">
+                        Search Subject
+                    </label>
+
+                    <input
+                        type="text"
+                        id="subjectSearch"
+                        placeholder="Search subject or course code..."
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Subject Cards -->
+
+            {% if subjects %}
+
+                {% for subject in subjects %}
+
+                    <details class="subject-details">
+
+                        <summary class="subject-summary">
+
+                            <div>
+
+                                <h2>
+                                    {{ subject.subject_name }}
+                                </h2>
+
+                                <p>
+                                    Course Code:
+                                    {{ subject.course_code }}
+
+                                    {% if subject.credits is not none %}
+                                        | Credits: {{ subject.credits }}
+                                    {% endif %}
+                                </p>
+
+                            </div>
+
+                            <span class="expand-icon">
+                                ⌄
+                            </span>
+
+                        </summary>
+
+
+                        <div class="subject-content">
+
+                            <h3>Syllabus Units</h3>
+
+                            {% if subject.units %}
+
+                                <ol class="unit-list">
+
+                                    {% for unit in subject.units %}
+
+                                        <li>
+                                            {{ unit.unit_title }}
+                                        </li>
+
+                                    {% endfor %}
+
+                                </ol>
+
+                            {% else %}
+
+                                <p>
+                                    Syllabus units will be added soon.
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+                    </details>
+
+                {% endfor %}
+
+
+                <div class="no-results" id="noResults">
+                    No matching subject found.
+                    Try another subject name or course code.
+                </div>
+
+
+            {% else %}
+
+                <div class="empty-message">
+
+                    <h2>📖 Syllabus Coming Soon!</h2>
+
+                    <p>
+                        We haven't added syllabus content for
+                        Semester {{ selected_semester }} yet.
+                    </p>
+
+                    <p>
+                        Please check back later.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        {% endif %}
+
+
+        <footer>
+            LearnSmart AI | Intelligent Personalized Learning System
+        </footer>
+
+    </div>
+
+
+    <script>
+
+        // Change semester without losing the current page
+
+        function changeSemester(semester) {
+
+            window.location.href =
+                "{{ url_for('syllabus') }}" + "?semester=" + semester;
+
+        }
+
+
+        // Search subjects by name or course code
+
+        const searchInput = document.getElementById("subjectSearch");
+
+        if (searchInput) {
+
+            searchInput.addEventListener("input", function () {
+
+                const searchValue = this.value.toLowerCase().trim();
+
+                const subjectCards = document.querySelectorAll(
+                    ".subject-details"
+                );
+
+                let visibleCount = 0;
+
+                subjectCards.forEach(function (card) {
+
+                    const subjectText = card.textContent.toLowerCase();
+
+                    const isMatch = subjectText.includes(searchValue);
+
+                    card.style.display = isMatch ? "block" : "none";
+
+                    if (isMatch) {
+                        visibleCount++;
+                    }
+
+                });
+
+                const noResults = document.getElementById("noResults");
+
+                if (noResults) {
+
+                    noResults.style.display =
+                        visibleCount === 0 ? "block" : "none";
+
+                }
+
+            });
+
+        }
+
+    </script>
+
+</body>
+</html>

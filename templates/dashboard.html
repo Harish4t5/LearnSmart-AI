@@ -676,50 +676,51 @@ footer {
     }
 }
     </style>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
 </head>
 
-<body>
+<body class="dashboard-body">
 
     {% include 'navbar.html' %}
 
-    <div class="container">
+    <main class="container">
 
-        <div class="welcome">
+        <!-- WELCOME -->
+        <section class="welcome">
             <h1>Welcome, {{ student.full_name }}! 👋</h1>
-            <p>Your personalized learning journey starts here.</p>
-        </div>
+            <p>Your personalized learning journey starts here. Learn, assess, understand and improve.</p>
+        </section>
 
-        <div class="profile">
+        <!-- OVERALL LEARNING SUMMARY -->
+        <section class="learning-summary">
+            <h2>📊 Your Learning Overview</h2>
 
-<!-- OVERALL LEARNING SUMMARY -->
-<section class="learning-summary">
+            <div class="summary-grid">
 
-    <h2>📊 Overall Learning Summary</h2>
+                <div class="summary-card summary-blue">
+                    <h3>Total Quiz Attempts</h3>
+                    <h2>{{ learning_summary.total_quiz_attempts }}</h2>
+                </div>
 
-    <div class="summary-grid">
+                <div class="summary-card summary-green">
+                    <h3>Average Quiz Score</h3>
+                    <h2>{{ learning_summary.average_quiz_score }}%</h2>
+                </div>
 
-        <div class="summary-card summary-blue">
-            <h3>Total Quiz Attempts</h3>
-            <h2>{{ learning_summary.total_quiz_attempts }}</h2>
-        </div>
+                <div class="summary-card summary-orange">
+                    <h3>Topics Practiced</h3>
+                    <h2>{{ learning_summary.topics_tracked }}</h2>
+                </div>
 
-        <div class="summary-card summary-green">
-            <h3>Average Quiz Score</h3>
-            <h2>{{ learning_summary.average_quiz_score }}%</h2>
-        </div>
+            </div>
+        </section>
 
-        <div class="summary-card summary-orange">
-            <h3>Topics Practiced</h3>
-            <h2>{{ learning_summary.topics_tracked }}</h2>
-        </div>
+        <!-- ACADEMIC PROFILE -->
+        <section class="profile">
 
-    </div>
-
-</section>
-<!-- PERFORMANCE ANALYTICS -->
-
-
-            <h2>My Academic Profile</h2>
+            <h2>👤 My Academic Profile</h2>
 
             <div class="details">
 
@@ -749,328 +750,326 @@ footer {
                 </div>
 
             </div>
-        </div>
 
-        <h2 class="section-title">Your Learning Space</h2>
-        <a href="{{ url_for('marks') }}"
-   style="display:inline-block;
-   background:#2457d6;
-   color:white;
-   padding:12px 20px;
-   border-radius:8px;
-   text-decoration:none;
-   margin-bottom:20px;">
+        </section>
 
-    + Enter Academic Marks
+        <!-- LEARNING SPACE -->
+        <section class="learning-space">
 
+            <h2 class="section-title">Your Learning Space</h2>
 
-</a>
- <div class="features">
-    <!-- Academic Performance -->
-    <a class="feature"
-   href="{{ url_for('marks') }}"
-   style="display:block; color:inherit; text-decoration:none; cursor:pointer;">
-    <h3>📊 Academic Performance</h3>
-    <p>Track your marks and analyze your academic performance.</p>
-    </a>
+            <a class="dashboard-action" href="{{ url_for('marks') }}">
+                + Enter Academic Marks
+            </a>
 
-    <!-- Online Assessments -->
-    <a class="feature"
-   href="{{ url_for('quiz') }}"
-   style="display:block; color:inherit; text-decoration:none; cursor:pointer;">
-    <h3>📝 Online Assessments</h3>
-    <p>Take practice tests and evaluate your subject knowledge.</p>
-    </a>
+            <div class="features">
 
-<!-- Personalized Learning -->
-    <a class="feature"
-   href="{{ url_for('study_materials') }}"
-   style="display:block; color:inherit; text-decoration:none; cursor:pointer;">
-    <h3>🎯 Personalized Learning</h3>
-    <p>Discover your weak topics and get suitable learning resources.</p>
-    </a>
+                <a class="feature" href="{{ url_for('marks') }}">
+                    <h3>📊 Academic Performance</h3>
+                    <p>Enter your academic marks and review your performance.</p>
+                </a>
 
-<!-- Progress Tracking -->
-<a class="feature"
-   href="#improvement-tracker"
-   style="display:block; color:inherit; text-decoration:none; cursor:pointer;">
-    <h3>📈 Progress Tracking</h3>
-    <p>Monitor your learning progress and academic improvement.</p>
-</a>
+                <a class="feature" href="{{ url_for('quiz') }}">
+                    <h3>📝 Online Assessments</h3>
+                    <p>Attempt practice tests and evaluate your subject knowledge.</p>
+                </a>
 
+                <a class="feature" href="{{ url_for('study_materials') }}">
+                    <h3>🎯 Personalized Learning</h3>
+                    <p>Explore learning resources and focus on topics that need attention.</p>
+                </a>
 
-            <div class="feature">
-    <h3>📈 My Analytics</h3>
-    <p>View your quiz history, average scores, topic-wise performance and learning progress.</p>
+                <a class="feature" href="#improvement-tracker">
+                    <h3>📈 Progress Tracking</h3>
+                    <p>Compare your previous and latest quiz performance.</p>
+                </a>
 
-    <a href="{{ url_for('analytics') }}"
-       style="display:inline-block;
-       background:#2457d6;
-       color:white;
-       padding:9px 16px;
-       border-radius:6px;
-       text-decoration:none;
-       margin-top:10px;">
-        View Analytics
-    </a>
-</div>
+                <div class="feature">
+                    <h3>📉 My Analytics</h3>
+                    <p>Explore your quiz history, average scores and learning progress.</p>
+                    <a class="dashboard-action" href="{{ url_for('analytics') }}">
+                        View Analytics
+                    </a>
+                </div>
 
-
-        </div>
-
-    </div>
-
-    <footer>
-        LearnSmart AI | Intelligent Personalized Learning System
-    </footer>
-<section style="
-    background:#f8faff;
-    padding:20px;
-    border-radius:12px;
-    margin-top:25px;
-">
-
-    <h2>🎯 Subjects That Need Improvement</h2>
-
-    {% if weak_subjects %}
-
-        <table border="1" cellpadding="10"
-               style="width:100%; border-collapse:collapse;">
-
-            <tr>
-                <th>Subject</th>
-                <th>Average Percentage</th>
-                <th>Status</th>
-            </tr>
-
-            {% for subject in weak_subjects %}
-
-            <tr>
-                <td>{{ subject.subject }}</td>
-
-                <td>
-                    {{ subject.average_percentage }}%
-                </td>
-
-                <td style="color:#dc2626;">
-                    Needs Improvement
-                </td>
-            </tr>
-
-            {% endfor %}
-
-        </table>
-
-    {% else %}
-
-        <p>
-            Great job! No subjects currently need improvement.
-        </p>
-
-    {% endif %}
-
-</section>
-
-<section class="dashboard-section">
-
-<!-- STUDENT IMPROVEMENT TRACKER -->
-<section class="improvement-section" id="improvement-tracker">
-
-    <h2 class="improvement-title">
-        📈 Student Improvement Tracker
-    </h2>
-
-    {% if topic_progress %}
-
-        {% for item in topic_progress %}
-
-            <div class="improvement-card">
-
-                <h3>{{ item.topic }}</h3>
-
-                <p>
-                    Latest Score:
-                    <strong>{{ item.current_score }}%</strong>
-                </p>
-
-                {% if item.previous_score is not none %}
-
-                    <p>
-                        Previous Score:
-                        {{ item.previous_score }}%
-                    </p>
-
-                    {% if item.improvement > 0 %}
-
-                        <p class="improvement-up">
-                            <strong>
-                                ↑ Improved by {{ item.improvement }} percentage points
-                            </strong>
-                        </p>
-
-                    {% elif item.improvement < 0 %}
-
-                        <p class="improvement-down">
-                            <strong>
-                                ↓ Decreased by {{ item.improvement | abs }} percentage points
-                            </strong>
-                        </p>
-
-                    {% else %}
-
-                        <p class="improvement-neutral">
-                            No change in performance.
-                        </p>
-
-                    {% endif %}
-
-                {% else %}
-
-                    <p class="improvement-neutral">
-                        First attempt. Attempt another quiz to track improvement.
-                    </p>
-
-                {% endif %}
+                <div class="feature">
+                    <h3>📚 Academic Syllabus</h3>
+                    <p>Explore your semester-wise subjects and syllabus units.</p>
+                    <a class="dashboard-action" href="{{ url_for('syllabus') }}">
+                        View Syllabus
+                    </a>
+                </div>
 
             </div>
 
-        {% endfor %}
+        </section>
 
-    {% else %}
+        <!-- WEAK SUBJECT ANALYSIS -->
+        <section class="dashboard-weak-section">
 
-        <p>
-            No quiz progress available yet. Attempt a quiz to start tracking.
-        </p>
+            <h2>🎯 Subjects That Need Improvement</h2>
 
-    {% endif %}
+            {% if weak_subjects %}
 
-</section>
+                <table>
 
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Average Percentage</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
 
-<h2 class="topic-performance-title">Topic-wise Performance</h2>
+                    <tbody>
 
-{% if topic_performance %}
-    {% for topic in topic_performance %}
-        <div class="topic-performance-card">
-            <h3>{{ topic.topic }}</h3>
+                        {% for subject in weak_subjects %}
 
-            <p>
-                Average Score:
-                <strong>{{ topic.average_percentage }}%</strong>
-            </p>
+                            <tr>
+                                <td>{{ subject.subject }}</td>
+                                <td>{{ subject.average_percentage }}%</td>
+                                <td class="performance-weak">
+                                    Needs Improvement
+                                </td>
+                            </tr>
 
-            <!-- Visual Progress Bar -->
-            <div class="progress-track">
-                <div class="progress-fill" style="
-                    width: {{ topic.average_percentage }}%;
-                    background:
-                    {% if topic.average_percentage < 60 %}
-                        #ef4444
-                    {% elif topic.average_percentage < 75 %}
-                        #f59e0b
-                    {% else %}
-                        #22c55e
-                    {% endif %};
-                "></div>
-            </div>
+                        {% endfor %}
 
-            {% if topic.average_percentage < 60 %}
-                <p class="performance-weak">
-                    Needs Improvement - Focus on this topic.
-                </p>
-            {% elif topic.average_percentage < 75 %}
-                <p class="performance-medium">
-                    Good - More practice recommended.
-                </p>
+                    </tbody>
+
+                </table>
+
             {% else %}
-                <p class="performance-strong">
-                    Excellent - Keep it up!
-                </p>
+
+                <p>Great job! No subjects currently need improvement.</p>
+
             {% endif %}
-        </div>
-    {% endfor %}
-{% else %}
-    <p>No quiz performance available yet. Attempt a quiz to see your progress.</p>
-{% endif %}
 
-</section>
-<!-- PERSONALIZED LEARNING RECOMMENDATIONS -->
-<section class="recommendations-section">
+        </section>
 
-    <h2 class="recommendations-title">
-        🤖 Personalized Learning Recommendations
-    </h2>
+        <!-- STUDENT IMPROVEMENT TRACKER -->
+        <section class="improvement-section" id="improvement-tracker">
 
-    {% if recommendations %}
+            <h2 class="improvement-title">
+                📈 Student Improvement Tracker
+            </h2>
 
-        {% for recommendation in recommendations %}
+            {% if topic_progress %}
 
-            <div class="recommendation-card">
+                {% for item in topic_progress %}
 
-                <h3>{{ recommendation.topic }}</h3>
+                    <div class="improvement-card">
 
-                <p>
-                    Current Performance:
-                    <strong>{{ recommendation.percentage }}%</strong>
-                </p>
+                        <h3>{{ item.topic }}</h3>
 
-                <p>
-                    Learning Level:
-                    <strong>{{ recommendation.level }}</strong>
-                </p>
+                        <p>
+                            Latest Score:
+                            <strong>{{ item.current_score }}%</strong>
+                        </p>
 
-                <p>{{ recommendation.message }}</p>
+                        {% if item.previous_score is not none %}
 
-                <p class="recommendation-practice">
-                    <strong>Recommended Practice:</strong>
-                    {{ recommendation.practice }}
-                </p>
+                            <p>
+                                Previous Score:
+                                {{ item.previous_score }}%
+                            </p>
 
-                {% if recommendation.resources %}
+                            {% if item.improvement > 0 %}
 
-                    <hr class="recommendation-divider">
+                                <p class="improvement-up">
+                                    ↑ Improved by {{ item.improvement }} percentage points
+                                </p>
 
-                    <h4>📚 Recommended Learning Resources</h4>
+                            {% elif item.improvement < 0 %}
 
-                    {% for resource in recommendation.resources %}
+                                <p class="improvement-down">
+                                    ↓ Decreased by {{ item.improvement | abs }} percentage points
+                                </p>
 
-                        <div class="resource-item">
+                            {% else %}
 
-                            <h5>{{ resource.resource_type }}</h5>
+                                <p class="improvement-neutral">
+                                    No change in performance.
+                                </p>
 
-                            <a href="{{ resource.url }}"
-                               target="_blank"
-                               rel="noopener noreferrer">
-                                {{ resource.title }}
-                            </a>
-
-                            {% if resource.description %}
-                                <p>{{ resource.description }}</p>
                             {% endif %}
+
+                        {% else %}
+
+                            <p class="improvement-neutral">
+                                First attempt. Attempt another quiz to track improvement.
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>No quiz progress available yet. Attempt a quiz to start tracking.</p>
+
+            {% endif %}
+
+        </section>
+
+        <!-- TOPIC-WISE PERFORMANCE -->
+        <section class="topic-performance-section">
+
+            <h2 class="topic-performance-title">
+                📚 Topic-wise Performance
+            </h2>
+
+            {% if topic_performance %}
+
+                {% for topic in topic_performance %}
+
+                    <div class="topic-performance-card">
+
+                        <h3>{{ topic.topic }}</h3>
+
+                        <p>
+                            Average Score:
+                            <strong>{{ topic.average_percentage }}%</strong>
+                        </p>
+
+                        <div class="progress-track">
+
+                            <div class="progress-fill"
+                                 style="
+                                    width: {{ topic.average_percentage }}%;
+                                    background:
+                                    {% if topic.average_percentage < 60 %}
+                                        #c14e4e
+                                    {% elif topic.average_percentage < 75 %}
+                                        #c18a43
+                                    {% else %}
+                                        #4c9470
+                                    {% endif %};
+                                 ">
+                            </div>
 
                         </div>
 
-                    {% endfor %}
+                        {% if topic.average_percentage < 60 %}
 
-                {% else %}
+                            <p class="performance-weak">
+                                Needs Improvement — Focus on this topic.
+                            </p>
 
-                    <p>No learning resources available for this topic yet.</p>
+                        {% elif topic.average_percentage < 75 %}
 
-                {% endif %}
+                            <p class="performance-medium">
+                                Good — More practice recommended.
+                            </p>
 
-            </div>
+                        {% else %}
 
-        {% endfor %}
+                            <p class="performance-strong">
+                                Excellent — Keep it up!
+                            </p>
 
-    {% else %}
+                        {% endif %}
 
-        <p>
-            Attempt a quiz to receive personalized learning recommendations.
-        </p>
+                    </div>
 
-    {% endif %}
+                {% endfor %}
 
-</section>
+            {% else %}
+
+                <p>No quiz performance available yet. Attempt a quiz to see your progress.</p>
+
+            {% endif %}
+
+        </section>
+
+        <!-- PERSONALIZED RECOMMENDATIONS -->
+        <section class="recommendations-section">
+
+            <h2 class="recommendations-title">
+                🤖 Personalized Learning Recommendations
+            </h2>
+
+            {% if recommendations %}
+
+                {% for recommendation in recommendations %}
+
+                    <div class="recommendation-card">
+
+                        <h3>{{ recommendation.topic }}</h3>
+
+                        <p>
+                            Current Performance:
+                            <strong>{{ recommendation.percentage }}%</strong>
+                        </p>
+
+                        <p>
+                            Learning Level:
+                            <strong>{{ recommendation.level }}</strong>
+                        </p>
+
+                        <p>{{ recommendation.message }}</p>
+
+                        <p class="recommendation-practice">
+                            <strong>Recommended Practice:</strong>
+                            {{ recommendation.practice }}
+                        </p>
+
+                        {% if recommendation.resources %}
+
+                            <hr class="recommendation-divider">
+
+                            <h4>📚 Recommended Learning Resources</h4>
+
+                            {% for resource in recommendation.resources %}
+
+                                <div class="resource-item">
+
+                                    <h5>{{ resource.resource_type }}</h5>
+
+                                    <a href="{{ resource.url }}"
+                                       target="_blank"
+                                       rel="noopener noreferrer">
+                                        {{ resource.title }}
+                                    </a>
+
+                                    {% if resource.description %}
+                                        <p>{{ resource.description }}</p>
+                                    {% endif %}
+
+                                </div>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <p>No learning resources available for this topic yet.</p>
+
+                        {% endif %}
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>
+                    Attempt a quiz to receive personalized learning recommendations.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+    <footer>
+        LearnSmart AI | Learn • Assess • Understand • Improve
+    </footer>
 
 </body>
+</html>
+
+
 </html>

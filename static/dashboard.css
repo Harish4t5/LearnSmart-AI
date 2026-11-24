@@ -1,0 +1,423 @@
+
+/* =========================================
+   LEARNSMART AI — PERSONAL LEARNING DASHBOARD
+   Dashboard-only styles
+========================================= */
+
+body.dashboard-body {
+    background: #f4f6f8;
+    color: #202b38;
+    font-family: "Segoe UI", Arial, sans-serif;
+    line-height: 1.6;
+}
+
+body.dashboard-body .container {
+    width: min(1180px, 92%);
+    max-width: none;
+    margin: 32px auto 55px;
+    padding: 0;
+}
+
+/* Welcome area */
+body.dashboard-body .welcome {
+    position: relative;
+    overflow: hidden;
+    padding: 38px;
+    margin-bottom: 24px;
+    color: #fff;
+    background: linear-gradient(115deg, #172f45, #24566b);
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(23, 47, 69, .12);
+}
+
+body.dashboard-body .welcome::after {
+    content: "";
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    right: -75px;
+    top: -100px;
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 50%;
+    box-shadow: 0 0 0 28px rgba(255,255,255,.04),
+                0 0 0 58px rgba(255,255,255,.03);
+}
+
+body.dashboard-body .welcome h1 {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 8px;
+    color: #fff !important;
+    font-size: clamp(25px, 4vw, 34px);
+    line-height: 1.3;
+}
+
+body.dashboard-body .welcome p {
+    position: relative;
+    z-index: 1;
+    color: #e1edf1 !important;
+    font-size: 15px;
+}
+
+/* Main dashboard panels */
+body.dashboard-body .profile,
+body.dashboard-body .learning-summary,
+body.dashboard-body .improvement-section,
+body.dashboard-body .topic-performance-section,
+body.dashboard-body .recommendations-section,
+body.dashboard-body .dashboard-section,
+body.dashboard-body .dashboard-weak-section {
+    background: #fff;
+    border: 1px solid #e5e9ed;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(28, 45, 60, .045);
+}
+
+body.dashboard-body .profile {
+    padding: 26px;
+    margin-bottom: 25px;
+}
+
+body.dashboard-body .profile h2,
+body.dashboard-body .learning-summary h2,
+body.dashboard-body .improvement-title,
+body.dashboard-body .topic-performance-title,
+body.dashboard-body .recommendations-title,
+body.dashboard-body .dashboard-weak-section h2 {
+    color: #20394b;
+    font-size: 21px;
+    margin-bottom: 20px;
+}
+
+/* Learning summary */
+body.dashboard-body .learning-summary {
+    padding: 24px;
+    margin: 0 0 26px;
+    box-shadow: none;
+}
+
+body.dashboard-body .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+}
+
+body.dashboard-body .summary-card {
+    min-height: 125px;
+    padding: 21px;
+    border: 1px solid #e8edf0;
+    border-radius: 12px;
+}
+
+body.dashboard-body .summary-card h3 {
+    margin-bottom: 12px;
+    color: #667784;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+body.dashboard-body .summary-card h2 {
+    margin: 0;
+    color: #20394b;
+    font-size: 30px;
+}
+
+body.dashboard-body .summary-blue {
+    background: #eef5f8;
+    border-left: 4px solid #47788b;
+}
+
+body.dashboard-body .summary-green {
+    background: #eff7f2;
+    border-left: 4px solid #4c9470;
+}
+
+body.dashboard-body .summary-orange {
+    background: #fbf5eb;
+    border-left: 4px solid #c18a43;
+}
+
+/* Academic profile */
+body.dashboard-body .details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 13px;
+}
+
+body.dashboard-body .detail {
+    padding: 16px;
+    background: #f7f9fa;
+    border: 1px solid #e8edf0;
+    border-radius: 11px;
+    transition: transform .2s ease, border-color .2s ease;
+}
+
+body.dashboard-body .detail:hover {
+    transform: translateY(-3px);
+    border-color: #a9c2cc;
+}
+
+body.dashboard-body .detail p {
+    margin-bottom: 6px;
+    color: #73818b;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+body.dashboard-body .detail h3 {
+    color: #263d4c;
+    font-size: 15px;
+    overflow-wrap: anywhere;
+}
+
+/* Section headings and learning space */
+body.dashboard-body .section-title {
+    margin: 34px 0 17px;
+    color: #20394b;
+    font-size: 23px;
+}
+
+body.dashboard-body .features {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+body.dashboard-body .feature {
+    display: block;
+    min-height: 155px;
+    padding: 23px;
+    color: inherit;
+    text-decoration: none;
+    background: #fff;
+    border: 1px solid #e5e9ed;
+    border-radius: 14px;
+    box-shadow: 0 5px 16px rgba(28,45,60,.035);
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+body.dashboard-body .feature:hover {
+    transform: translateY(-4px);
+    border-color: #9db9c3;
+    box-shadow: 0 10px 24px rgba(28,45,60,.08);
+}
+
+body.dashboard-body .feature h3 {
+    margin-bottom: 10px;
+    color: #315e70;
+    font-size: 16px;
+}
+
+body.dashboard-body .feature p {
+    color: #6b7a84;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* Shared action button */
+body.dashboard-body .dashboard-action {
+    display: inline-block;
+    padding: 11px 17px;
+    margin-bottom: 18px;
+    color: #fff;
+    text-decoration: none;
+    background: #315e70;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background .2s ease;
+}
+
+body.dashboard-body .dashboard-action:hover {
+    background: #234858;
+}
+
+/* Weak subjects */
+body.dashboard-body .dashboard-weak-section {
+    padding: 25px;
+    margin: 25px 0;
+    overflow-x: auto;
+}
+
+body.dashboard-body .dashboard-weak-section table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+body.dashboard-body .dashboard-weak-section th,
+body.dashboard-body .dashboard-weak-section td {
+    padding: 13px 14px;
+    border-bottom: 1px solid #e9eef0;
+    font-size: 14px;
+}
+
+body.dashboard-body .dashboard-weak-section th {
+    color: #526875;
+    background: #f4f7f8;
+}
+
+/* Improvement tracker and topic performance */
+body.dashboard-body .improvement-section,
+body.dashboard-body .topic-performance-section,
+body.dashboard-body .recommendations-section {
+    padding: 25px;
+    margin: 25px 0;
+}
+
+body.dashboard-body .improvement-card,
+body.dashboard-body .topic-performance-card,
+body.dashboard-body .recommendation-card {
+    padding: 20px;
+    margin: 14px 0;
+    background: #f8fafb;
+    border: 1px solid #e7ecef;
+    border-radius: 12px;
+}
+
+body.dashboard-body .improvement-card h3,
+body.dashboard-body .topic-performance-card h3,
+body.dashboard-body .recommendation-card h3 {
+    margin-bottom: 9px;
+    color: #29495a;
+    font-size: 16px;
+}
+
+body.dashboard-body .improvement-card p,
+body.dashboard-body .topic-performance-card p,
+body.dashboard-body .recommendation-card p {
+    margin: 7px 0;
+    color: #667782;
+    font-size: 14px;
+}
+
+body.dashboard-body .improvement-up,
+body.dashboard-body .performance-strong {
+    color: #258052 !important;
+    font-weight: 700;
+}
+
+body.dashboard-body .improvement-down,
+body.dashboard-body .performance-weak {
+    color: #c14e4e !important;
+    font-weight: 700;
+}
+
+body.dashboard-body .improvement-neutral,
+body.dashboard-body .performance-medium {
+    color: #a2742f !important;
+    font-weight: 600;
+}
+
+/* Topic progress bar */
+body.dashboard-body .progress-track {
+    width: 100%;
+    height: 9px;
+    margin: 12px 0;
+    overflow: hidden;
+    background: #e8edef;
+    border-radius: 20px;
+}
+
+body.dashboard-body .progress-fill {
+    height: 100%;
+    max-width: 100%;
+    border-radius: 20px;
+}
+
+/* Recommendation resources */
+body.dashboard-body .recommendation-practice {
+    padding: 12px;
+    background: #eef4f5;
+    border-radius: 8px;
+}
+
+body.dashboard-body .recommendation-divider {
+    margin: 18px 0;
+    border: 0;
+    border-top: 1px solid #e1e8eb;
+}
+
+body.dashboard-body .recommendation-card h4 {
+    margin: 12px 0;
+    color: #315e70;
+}
+
+body.dashboard-body .resource-item {
+    padding: 15px;
+    margin: 10px 0;
+    background: #fff;
+    border: 1px solid #e5ebee;
+    border-radius: 9px;
+}
+
+body.dashboard-body .resource-item h5 {
+    margin-bottom: 6px;
+    color: #74838c;
+    font-size: 12px;
+}
+
+body.dashboard-body .resource-item a {
+    color: #315e70;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+body.dashboard-body .resource-item a:hover {
+    text-decoration: underline;
+}
+
+body.dashboard-body .resource-item p {
+    margin-top: 7px;
+    color: #71808a;
+    font-size: 13px;
+}
+
+/* Dashboard footer */
+body.dashboard-body footer {
+    margin-top: 35px;
+    padding: 24px;
+    color: #dce6e9;
+    background: #20394b;
+    text-align: center;
+    font-size: 13px;
+}
+
+/* Responsive layout */
+@media (max-width: 800px) {
+    body.dashboard-body .features {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    body.dashboard-body .summary-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    body.dashboard-body .container {
+        width: 92%;
+        margin-top: 20px;
+    }
+
+    body.dashboard-body .welcome {
+        padding: 25px 21px;
+    }
+
+    body.dashboard-body .profile,
+    body.dashboard-body .learning-summary,
+    body.dashboard-body .improvement-section,
+    body.dashboard-body .topic-performance-section,
+    body.dashboard-body .recommendations-section,
+    body.dashboard-body .dashboard-weak-section {
+        padding: 18px;
+    }
+
+    body.dashboard-body .features {
+        grid-template-columns: 1fr;
+    }
+
+    body.dashboard-body .details {
+        grid-template-columns: 1fr;
+    }
+}

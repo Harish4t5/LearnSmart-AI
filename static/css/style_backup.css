@@ -1,0 +1,614 @@
+
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f8faff;
+    color: #172554;
+}
+
+/* Navigation */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 8%;
+    background: white;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: #172554;
+}
+
+.logo span {
+    color: #2563eb;
+}
+
+.nav-links {
+    display: flex;
+    gap: 35px;
+    list-style: none;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #475569;
+    font-weight: 600;
+}
+
+.nav-links a:hover {
+    color: #2563eb;
+}
+
+.login-btn {
+    text-decoration: none;
+    background: #2563eb;
+    color: white;
+    padding: 11px 25px;
+    border-radius: 8px;
+}
+
+/* Hero Section */
+.hero {
+    min-height: 520px;
+    padding: 90px 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+    background: linear-gradient(120deg, #eff6ff, #ffffff);
+}
+
+.hero-content {
+    max-width: 600px;
+}
+
+.tagline {
+    color: #2563eb;
+    font-weight: bold;
+    letter-spacing: 2px;
+    font-size: 13px;
+}
+
+.hero h1 {
+    font-size: 58px;
+    line-height: 1.15;
+    margin: 22px 0;
+}
+
+.hero h1 span {
+    color: #2563eb;
+}
+
+.description {
+    color: #64748b;
+    line-height: 1.8;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.start-btn {
+    display: inline-block;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    padding: 15px 28px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.start-btn:hover,
+.login-btn:hover {
+    background: #1d4ed8;
+}
+
+/* Hero Card */
+.hero-card {
+    background: white;
+    padding: 35px;
+    border-radius: 18px;
+    width: 360px;
+    box-shadow: 0 15px 45px rgba(37, 99, 235, 0.12);
+}
+
+.card-icon {
+    font-size: 38px;
+    color: #2563eb;
+}
+
+.hero-card h2 {
+    margin: 15px 0 8px;
+}
+
+.hero-card p {
+    color: #64748b;
+    margin-bottom: 25px;
+}
+
+.feature-item {
+    background: #eff6ff;
+    padding: 14px;
+    margin-top: 12px;
+    border-radius: 8px;
+    color: #1e40af;
+    font-size: 14px;
+}
+
+/* Features */
+.features {
+    padding: 80px 8%;
+    text-align: center;
+}
+
+.section-heading p {
+    color: #2563eb;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.section-heading h2 {
+    font-size: 32px;
+    margin: 15px 0 40px;
+}
+
+.feature-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+
+.feature-box {
+    background: white;
+    padding: 30px 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+}
+
+.feature-icon {
+    font-size: 35px;
+    margin-bottom: 18px;
+}
+
+.feature-box h3 {
+    margin-bottom: 12px;
+}
+
+.feature-box p {
+    color: #64748b;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+/* About */
+.about {
+    text-align: center;
+    padding: 75px 15%;
+    background: #eff6ff;
+}
+
+.about h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.about p {
+    color: #64748b;
+    line-height: 1.8;
+}
+
+/* Footer */
+footer {
+    background: #172554;
+    color: white;
+    padding: 25px;
+    text-align: center;
+    line-height: 1.8;
+}
+
+/* Responsive Design */
+@media (max-width: 850px) {
+    .hero {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hero-card {
+        width: 100%;
+    }
+
+    .feature-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 550px) {
+    .navbar {
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .nav-links {
+        gap: 15px;
+        font-size: 13px;
+    }
+
+    .hero h1 {
+        font-size: 42px;
+    }
+
+    .feature-container {
+        grid-template-columns: 1fr;
+    }
+
+    .section-heading h2 {
+        font-size: 25px;
+    }
+}
+
+/* =================================
+   LEARNSMART AI - QUIZ PAGE
+================================= */
+
+.quiz-page {
+    min-height: 100vh;
+    padding: 45px 20px 70px;
+    background: #f4f7ff;
+}
+
+.quiz-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+}
+
+/* Quiz Header */
+
+.quiz-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.quiz-tag {
+    display: inline-block;
+    color: #2457d6;
+    background: #e5edff;
+    padding: 7px 15px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+}
+
+.quiz-header h1 {
+    color: #172554;
+    font-size: 36px;
+    margin-bottom: 12px;
+}
+
+.quiz-header p {
+    color: #64748b;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Filter Card */
+
+.quiz-filter-card {
+    background: #ffffff;
+    padding: 24px;
+    border: 1px solid #e5eaf5;
+    border-radius: 14px;
+    box-shadow: 0 5px 20px rgba(30, 64, 175, 0.05);
+    margin-bottom: 25px;
+}
+
+.quiz-filter-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.filter-group label {
+    color: #334155;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #dbe3f0;
+    border-radius: 8px;
+    background: #f8faff;
+    color: #172554;
+    font-size: 15px;
+    outline: none;
+    cursor: pointer;
+}
+
+.filter-group select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+/* Assessment Summary */
+
+.assessment-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
+    background: linear-gradient(120deg, #2457d6, #3978ed);
+    color: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 8px 22px rgba(37, 99, 235, 0.15);
+}
+
+.summary-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    opacity: 0.85;
+}
+
+.assessment-summary h2 {
+    font-size: 25px;
+    margin: 8px 0;
+    color: #ffffff;
+}
+
+.assessment-summary p {
+    color: #e8efff;
+    font-size: 14px;
+}
+
+.assessment-stats {
+    display: flex;
+    gap: 12px;
+}
+
+.assessment-stat {
+    min-width: 105px;
+    padding: 13px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+.stat-number {
+    display: block;
+    font-size: 19px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.stat-caption {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #e8efff;
+}
+
+/* Question Cards */
+
+.quiz-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.question-card {
+    background: #ffffff;
+    padding: 25px;
+    border: 1px solid #e5eaf5;
+    border-radius: 13px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.question-card:hover {
+    border-color: #b8ccff;
+    box-shadow: 0 7px 22px rgba(37, 99, 235, 0.08);
+}
+
+.question-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 17px;
+}
+
+.question-number {
+    color: #2457d6;
+    background: #eaf0ff;
+    padding: 7px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.question-count {
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.question-card h3 {
+    color: #172554;
+    font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+/* Answer Options */
+
+.options-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.option-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 58px;
+    padding: 13px 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    background: #fbfcff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.option-item:hover {
+    border-color: #7da5ff;
+    background: #f0f5ff;
+}
+
+.option-item:has(input:checked) {
+    border-color: #2563eb;
+    background: #edf3ff;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.08);
+}
+
+.option-item input {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    accent-color: #2563eb;
+    cursor: pointer;
+}
+
+.option-letter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 27px;
+    height: 27px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    background: #e9efff;
+    color: #2457d6;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.option-text {
+    color: #334155;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+/* Submit Area */
+
+.quiz-submit-area {
+    text-align: center;
+    padding: 25px;
+    background: #ffffff;
+    border: 1px solid #e5eaf5;
+    border-radius: 13px;
+}
+
+.quiz-submit-area p {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.quiz-submit-btn {
+    padding: 14px 35px;
+    border: none;
+    border-radius: 8px;
+    background: #2457d6;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.quiz-submit-btn:hover {
+    background: #1745b5;
+    transform: translateY(-2px);
+}
+
+/* No Questions Message */
+
+.no-questions {
+    padding: 45px 20px;
+    text-align: center;
+    background: #ffffff;
+    border: 1px solid #e5eaf5;
+    border-radius: 13px;
+}
+
+.no-questions h3 {
+    color: #172554;
+    margin-bottom: 10px;
+}
+
+.no-questions p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* Responsive Quiz Layout */
+
+@media (max-width: 650px) {
+    .quiz-page {
+        padding: 30px 14px 50px;
+    }
+
+    .quiz-header h1 {
+        font-size: 28px;
+    }
+
+    .quiz-filter-form,
+    .options-list {
+        grid-template-columns: 1fr;
+    }
+
+    .assessment-summary {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .assessment-stats {
+        width: 100%;
+    }
+
+    .assessment-stat {
+        flex: 1;
+    }
+
+    .question-card {
+        padding: 18px;
+    }
+
+    .question-card h3 {
+        font-size: 16px;
+    }
+}
